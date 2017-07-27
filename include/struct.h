@@ -2,6 +2,8 @@ typedef struct s_config {
   // RabbitMQ Box, color, ...
   char *rabbit_shape;
   char *rabbit_style;
+  char *rabbit_size;
+  char *rabbit_color;
   // Node
   char *node_shape;
   char *node_style;

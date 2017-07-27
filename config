@@ -1,10 +1,12 @@
 rabbit_shape=
-rabbit_style=
+rabbit_style=filled, rounded
+rabbit_size=
+rabbit_color=
 
 node_shape=
 node_style=
 
-edge_color=
+edge_color=black
 
 worc_shape=
 worc_style=

@@ -11,9 +11,83 @@
 #include "struct.h"
 #include "get_next_line.h"
 
-t_config config;
-int	DEBUG = 0;
-char	*query;
+t_config	config;
+int		DEBUG = 0;
+char		*query;
+int		step = 1;
+
+char	**my_strsep(char *s, char c)
+{
+  char	**dest;
+  int	i = 0;
+  int	k = 0;
+  int	j = 0;
+  while (s[i])
+    {
+      if (s[i] == c)
+	k++;
+      i++;
+    }
+  dest = malloc(sizeof(char *) * (k + 2));
+  i = 0;
+  while (i != k + 2)
+    {
+      dest[i] = malloc(sizeof(char) * strlen(s));
+      memset(dest[i], 0, strlen(s));
+      i++;
+    }
+  i = k = 0;
+  while (s[i])
+    {
+      if (s[i] == c)
+	{
+	  i++;
+	  j++;
+	  k = 0;
+	}
+      dest[j][k] = s[i];
+      i++;
+      k++;
+    }
+  return (dest);
+}
+
+char	*getChild(char *key)
+{
+  int	i = 0;
+  int	k = 0;
+  char *dest;
+
+  dest = malloc(sizeof(char) * strlen(key));
+  memset(dest, 0, strlen(key));
+  while (key[i] != '\0' && key[i] != '.')
+    i++;
+  (key[i] == '.') ? i++ : 0;
+  while (key[i])
+    {
+      dest[k] = key[i];
+      k++;
+      i++;
+    }
+  dest[i] = '\0';
+  return (dest);
+}
+
+char	*getParent(char *key)
+{
+  int	i = 0;
+  char	*dest;
+
+  dest = malloc(sizeof(char) * strlen(key));
+  memset(dest, 0, strlen(key));
+  while (key[i] != '\0' && key[i] != '.')
+    {
+      dest[i] = key[i];
+      i++;
+    }
+  dest[i] = '\0';
+  return (dest);
+}
 
 int     is_present(char *s1, char *s2)
 {
@@ -77,7 +151,7 @@ void	get_configkey(char *prefix, char *key)
   static char **config_contain;
   int	i = 0;
   if (prefix == NULL && key == NULL)
-    while (i != 12)
+    while (i != 14)
       {
 	free(config_contain[i]);
 	i++;
@@ -85,8 +159,8 @@ void	get_configkey(char *prefix, char *key)
 
   if (config_contain == NULL)
     {
-      config_contain = malloc(sizeof(char *) * 12);
-      while (i != 12)
+      config_contain = malloc(sizeof(char *) * 14);
+      while (i != 14)
 	{
 	  config_contain[i] = malloc(sizeof(char) * 120);
 	  memset(config_contain[i], 0, 120);
@@ -112,6 +186,8 @@ void	print_config(t_config *config)
   printf("            Config File            \n");
   printf("rabbit_shape : %s\n", config->rabbit_shape);
   printf("rabbit_style : %s\n", config->rabbit_style);
+  printf("rabbit_size  : %s\n", config->rabbit_size);
+  printf("rabbit_color : %s\n", config->rabbit_color);
   printf("node_shape   : %s\n", config->node_shape);
   printf("node_style   : %s\n", config->node_style);
   printf("edge_color   : %s\n", config->edge_color);
@@ -128,6 +204,8 @@ void	set_default_key(t_config *config)
 {
   (config->rabbit_shape[0] == '\0') ? config->rabbit_shape = "box" : 0;
   (config->rabbit_style[0] == '\0') ? config->rabbit_style = "rounded" : 0;
+  (config->rabbit_size[0] == '\0') ? config->rabbit_size = "10" : 0;
+  (config->rabbit_color[0] == '\0') ? config->rabbit_color = "yellow" : 0;
   (config->node_shape[0] == '\0') ? config->node_shape = "box" : 0;
   (config->node_style[0] == '\0') ? config->node_style = "rounded" : 0;
   (config->edge_color[0] == '\0') ? config->edge_color = "white" : 0;
@@ -137,9 +215,6 @@ void	set_default_key(t_config *config)
   (config->event_shape[0] == '\0') ? config->event_shape = "box" : 0;
   (config->event_style[0] == '\0') ? config->event_style = "rounded" : 0;
   (config->event_color[0] == '\0') ? config->event_color = "black" : 0;
-  
-  
-
 }
 
 t_config	get_config(t_config *config)
@@ -151,6 +226,8 @@ t_config	get_config(t_config *config)
     exit (84);
   get_configkey("rabbit_shape", &*config->rabbit_shape);
   get_configkey("rabbit_style", &*config->rabbit_style);
+  get_configkey("rabbit_size", &*config->rabbit_size);
+  get_configkey("rabbit_color", &*config->rabbit_color);
   get_configkey("node_shape", &*config->node_shape);
   get_configkey("node_style", &*config->node_style);
   get_configkey("edge_color", &*config->edge_color);
@@ -169,6 +246,8 @@ void	initialize_config(t_config *config)
 {
   config->rabbit_shape = malloc(sizeof(char) * 20);
   config->rabbit_style = malloc(sizeof(char) * 20);
+  config->rabbit_size = malloc(sizeof(char) * 20);
+  config->rabbit_color = malloc(sizeof(char) * 20);
   config->node_shape = malloc(sizeof(char) * 20);
   config->node_style = malloc(sizeof(char) * 20);
   config->edge_color = malloc(sizeof(char) * 20);
@@ -189,6 +268,7 @@ void	print_dot_header()
   printf("\tconcentrate = true;\n\n");
   printf("\tnode [shape=\"%s\", style=\"%s\", penwidth = 2];\n", config.node_shape, config.node_style);
   printf("\tedge [color=\"%s\"];\n\n", config.edge_color);
+  printf("\tRabbitMQ [shape=\"%s\" width=\"%s\" style=\"%s\" color=\"%s\"];\n\n", config.rabbit_shape, config.rabbit_size, config.rabbit_style, config.rabbit_color);
   printf("### EndHeader ###\n\n");
   
 }
@@ -226,25 +306,86 @@ void	logger(char *log_name, char *log_contain)
   printf("#### End%s ####", log_name);
 }
 
+int	branch_type_one(char **result, int n)
+{
+  int	ret = 0;
+  int	i = 0;
+  int	cal = step;
+
+  if (result[1] != NULL && result[1] != '\0' && result[1][0] != '\0') // When we have parallele event
+    ret = 1;
+  (n == 1) ? cal++ : 0;
+  while (result[i][0] != '\0')
+    {
+      printf("\tRabbitMQ -> \"EVENT-%s\" [label=\"%d\" shape=\"%s\" style=\"%s\" color=\"%s\"];\n", getChild(result[i]), step, config.event_shape, config.event_style, config.event_color);
+      printf("\t\"EVENT-%s\" -> \"WORC-%s%d\" [shape=\"%s\" style=\"%s\" color=\"%s\"];\n", getChild(result[i]), getParent(result[i]), cal, config.worc_shape, config.worc_style, config.worc_color);
+      (n == 1) ? cal++ : 0;
+      i++;
+    }
+  step++;
+  return (ret);
+}  
+
+int	branch_type_three(char **result)
+{
+  int	ret = 0;
+  int	i = 0;
+  char	*full_back;
+
+  full_back = malloc(sizeof(char) * 200);
+  memset(full_back, 0, 200);
+  while (result[i][0] != '\0')
+    {
+      strcat(full_back, getChild(result[i]));
+      if (result[i + 1][0] != '\0')
+	strcat(full_back, "\\n");
+      i++;
+    }
+  printf("\t\"WORC-%s%d\" -> RabbitMQ [label=\"%s\\n%d\", style=dotted];\n", getParent(result[0]), step - 1, full_back, step);
+  free(full_back);
+  step++;
+  if (i > 1)
+    {
+      ret = 1;
+      branch_type_one(result, 1);
+    }
+  return (ret);
+}
+
+void	branch_type_two(char *s)
+{
+  printf("\tRabbitMQ -> \"EVENT-%s\" [label=\"%d\" shape=\"%s\" style=\"%s\" color=\"%s\"];\n", getChild(s), step, config.event_shape, config.event_style, config.event_color);
+  printf("\t\"EVENT-%s\" -> \"WORC-%s%d\" [shape=\"%s\" style=\"%s\" color=\"%s\"];\n", getChild(s), getParent(s), step, config.worc_shape, config.worc_style, config.worc_color);
+  step++;
+}
+
 void	analyze(char *s)
 {
+  static	int skipper = 0;
+  if (skipper != 0)
+    {
+      skipper--;
+      return;
+    }
   if (is_present(s, query) == 0)
     {
       if (is_present(s, "branch=") == 0)
 	{
-	  printf("Global !\n");
+	  skipper = branch_type_one(my_strsep(return_key(s), ','), 0);
 	}
-      else if (is_present(s, ".from=") == 0)
+      else if ((is_present(s, ".from=") == 0))
 	{
-	  printf("From !\n");
+	  branch_type_two(return_key(s));
 	}
       else if (is_present(s, ".to=") == 0)
 	{
-	  printf("To !\n");
+	  skipper = branch_type_three(my_strsep(return_key(s), ','));
 	}
     }
   else
-    return;
+    {
+      return;
+    }
 }
 
 void	transcompile(int fd)
