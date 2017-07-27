@@ -1,0 +1,631 @@
+###
+# !!! WARNING !!! !!! WARNING !!! !!! WARNING !!! !!! WARNING !!! !!! WARNING !!! !!! WARNING !!! !!! WARNING !!! !!! WARNING !!!
+# !!! WARNING !!! !!! WARNING !!! !!! WARNING !!! !!! WARNING !!! !!! WARNING !!! !!! WARNING !!! !!! WARNING !!! !!! WARNING !!!
+# !!! WARNING !!! !!! WARNING !!! !!! WARNING !!! !!! WARNING !!! !!! WARNING !!! !!! WARNING !!! !!! WARNING !!! !!! WARNING !!!
+###
+
+# CE FICHIER EST LE FICHIER ACTUEL (ET NON LA CIBLE) DONC AVEC UN FONCTIONNEMENT **SANS** DOMAINE
+# FICHIER A SUPPRIMER QUAND LE FONCTIONNEMENT **AVEC** DOMAINE SERA MIS EN PLACE PARTOUT DANS MORE
+# [ 30/05/2017 MODIFICATIONS A IMPACTER DANS LES DEUX FICHIERS POUR L'INSTANT ]
+
+###
+# !!! WARNING !!! !!! WARNING !!! !!! WARNING !!! !!! WARNING !!! !!! WARNING !!! !!! WARNING !!! !!! WARNING !!! !!! WARNING !!!
+# !!! WARNING !!! !!! WARNING !!! !!! WARNING !!! !!! WARNING !!! !!! WARNING !!! !!! WARNING !!! !!! WARNING !!! !!! WARNING !!!
+# !!! WARNING !!! !!! WARNING !!! !!! WARNING !!! !!! WARNING !!! !!! WARNING !!! !!! WARNING !!! !!! WARNING !!! !!! WARNING !!!
+###
+
+
+#######################################
+###################
+################### WORC
+###################
+#######################################
+
+### WORC LIST
+# trt-hors-worc : pas un vrai WORC mais afin d'initialiser les queues et exchanges rabbit pour mise à dispo des msg à un autre écouteur qu'un WORC
+amqp.worc=contribution,contact,annonceur,synchroRating,csm,partenaires,proprietes-utilisateur,trt-hors-worc
+
+### WORC OPERATIONS (PER WORC)
+# amqp.worc.myworc.operations=op1,op2
+# amqp.worc.myworc.output=yes
+
+amqp.worc.contribution.operations=diffuserAvisUtilisateur,supprimerAvis,supprimerAvisAncetre,historiserRemplacer,historiser,majResume,envoyerModerationAvisUtilisateur,envoyerModerationAvis,majPhotosUtilisateur,majPhoto,majSaAvisUtilisateur,majSaAvis,majSaPhotosUtilisateur,majSaPhoto,majSaDdrsUtilisateur,majSaDdr,majAvisSupport,majAvis,majPhotosSupport,refuserAvis,refuserPhoto,refuserDdr,ajouterAvis,ajouterSupportAvis,majResumeBatch,majAvisRubrique,genererFichierSuppAvisPart
+amqp.worc.contribution.output=yes
+
+amqp.worc.contact.operations=mailUtilisateur,mailContribution
+
+amqp.worc.annonceur.operations=avertir
+
+amqp.worc.synchroRating.operations=synchroResume
+
+amqp.worc.csm.operations=supprimerMedia,majMedia
+
+amqp.worc.partenaires.operations=avertirPartenaire
+
+amqp.worc.proprietes-utilisateur.operations=synchroFavorisUtilisateur,synchroFavori,diffuserFavorisUtilisateur,supprimerFavori,historiserFavori
+amqp.worc.proprietes-utilisateur.output=yes
+
+amqp.worc.trt-hors-worc.operations=autocompletionPhotoUgc,autocompletionPhotoAgc
+
+#######################################
+###################
+################### GENERAL
+###################
+#######################################
+
+### Batch management
+batch.max.messages=10000
+
+### Error management
+# TTL delay for error queue before going into the DLX
+amqp.worc.queue.ttl=20000
+
+# retry number before going to error exchange
+amqp.worc.queue.retry=5
+###
+# !!! WARNING !!! !!! WARNING !!! !!! WARNING !!! !!! WARNING !!! !!! WARNING !!! !!! WARNING !!! !!! WARNING !!! !!! WARNING !!!
+# !!! WARNING !!! !!! WARNING !!! !!! WARNING !!! !!! WARNING !!! !!! WARNING !!! !!! WARNING !!! !!! WARNING !!! !!! WARNING !!!
+# !!! WARNING !!! !!! WARNING !!! !!! WARNING !!! !!! WARNING !!! !!! WARNING !!! !!! WARNING !!! !!! WARNING !!! !!! WARNING !!!
+###
+
+# CE FICHIER EST LE FICHIER ACTUEL (ET NON LA CIBLE) DONC AVEC UN FONCTIONNEMENT **SANS** DOMAINE
+# FICHIER A SUPPRIMER QUAND LE FONCTIONNEMENT **AVEC** DOMAINE SERA MIS EN PLACE PARTOUT DANS MORE
+
+###
+# !!! WARNING !!! !!! WARNING !!! !!! WARNING !!! !!! WARNING !!! !!! WARNING !!! !!! WARNING !!! !!! WARNING !!! !!! WARNING !!!
+# !!! WARNING !!! !!! WARNING !!! !!! WARNING !!! !!! WARNING !!! !!! WARNING !!! !!! WARNING !!! !!! WARNING !!! !!! WARNING !!!
+# !!! WARNING !!! !!! WARNING !!! !!! WARNING !!! !!! WARNING !!! !!! WARNING !!! !!! WARNING !!! !!! WARNING !!! !!! WARNING !!!
+###
+
+
+#######################################
+###################
+################### WORKFLOWS
+###################
+#######################################
+
+#### WORKFLOW LIST
+# Exemple :
+# workflows.myworkflow.versions=1.0, 1.1, 1.2
+# workflows.myworkflow.default=1.2
+
+workflows.supprimerCompteAvecAvatar.versions=1.0, 1.1, 1.2
+workflows.supprimerCompteAvecAvatar.default=1.2
+
+workflows.supprimerCompteSansAvatar.versions=1.0, 1.1, 1.2
+workflows.supprimerCompteSansAvatar.default=1.2
+
+workflows.supprimerProfilAvecAvatar.versions=1.0, 1.1, 1.2
+workflows.supprimerProfilAvecAvatar.default=1.2
+
+workflows.supprimerProfilSansAvatar.versions=1.0, 1.1, 1.2
+workflows.supprimerProfilSansAvatar.default=1.2
+
+workflows.supprimerAvatar.versions=1.0
+workflows.supprimerAvatar.default=1.0
+
+workflows.modererPremierPseudoUtilisateur.versions=1.0
+workflows.modererPremierPseudoUtilisateur.default=1.0
+
+workflows.modererPremierPseudoEtAvatarUtilisateur.versions=1.0
+workflows.modererPremierPseudoEtAvatarUtilisateur.default=1.0
+
+workflows.blacklisterProAvis.versions=1.0
+workflows.blacklisterProAvis.default=1.0
+
+workflows.blacklisterProPhotos.versions=1.0
+workflows.blacklisterProPhotos.default=1.0
+
+workflows.desactiverCompte.versions=1.0
+workflows.desactiverCompte.default=1.0
+
+workflows.reinitialiserPro.versions=1.0
+workflows.reinitialiserPro.default=1.0
+
+workflows.reinitialiserProAvis.versions=1.0
+workflows.reinitialiserProAvis.default=1.0
+
+workflows.reinitialiserProPhoto.versions=1.0
+workflows.reinitialiserProPhoto.default=1.0
+
+workflows.supprimerAvis.versions=1.0
+workflows.supprimerAvis.default=1.0
+
+# OBSOLETE AU PROFIT DE modifierAvis
+workflows.remplacerAvis.versions=1.0
+workflows.remplacerAvis.default=1.0
+
+workflows.modifierAvis.versions=1.0
+workflows.modifierAvis.default=1.0
+
+workflows.modererAvisPositif.versions=1.0, 1.1
+workflows.modererAvisPositif.default=1.1
+
+workflows.modererAvisNegatif.versions=1.0
+workflows.modererAvisNegatif.default=1.0
+
+# OBSOLETE AU PROFIT DE modererDdrNegatif et modererDdrPositif
+workflows.modererDdr.versions=1.0
+workflows.modererDdr.default=1.0
+
+workflows.modererDdrNegatif.versions=1.0
+workflows.modererDdrNegatif.default=1.0
+workflows.modererDdrNegatif.info=https://wiki.services.local/pages/viewpage.action?pageId=82246066
+
+workflows.modererDdrPositif.versions=1.0
+workflows.modererDdrPositif.default=1.0
+workflows.modererDdrPositif.info=https://wiki.services.local/pages/viewpage.action?pageId=82246069
+
+workflows.modererSignalementAbusAvisPositif.versions=1.0
+workflows.modererSignalementAbusAvisPositif.default=1.0
+
+workflows.modererSignalementAbusPhotoPositif.versions=1.0
+workflows.modererSignalementAbusPhotoPositif.default=1.0
+
+workflows.modererSignalementAbusDdrPositif.versions=1.0
+workflows.modererSignalementAbusDdrPositif.default=1.0
+
+workflows.historiser.versions=1.0
+workflows.historiser.default=1.0
+
+workflows.historiserContacter.versions=1.0
+workflows.historiserContacter.default=1.0
+
+workflows.contacter.versions=1.0
+workflows.contacter.default=1.0
+
+workflows.contacterMajMedia.versions=1.0
+workflows.contacterMajMedia.default=1.0
+
+# OBSOLETE AU PROFIT DE modererPhotoAgc
+workflows.historiserAvertir.versions=1.0
+workflows.historiserAvertir.default=1.0
+
+workflows.modererPhotoAgc.versions=1.0, 1.1
+workflows.modererPhotoAgc.default=1.1
+
+workflows.modererPhotoUgc.versions=1.0, 1.1
+workflows.modererPhotoUgc.default=1.1
+
+workflows.avisObsolete.versions=1.0
+workflows.avisObsolete.default=1.0
+
+# OBSOLETE AU PROFIT DE workflows spécifiques (Ajout, Maj et Suppression)
+workflows.syndicationContributionSupport.versions=1.0, 1.1, 1.2, 1.3
+workflows.syndicationContributionSupport.default=1.2
+
+workflows.syndicationContributionAjouter.versions=1.0
+workflows.syndicationContributionAjouter.default=1.0
+
+workflows.syndicationContributionModifier.versions=1.0
+workflows.syndicationContributionModifier.default=1.0
+
+workflows.syndicationContributionSupprimer.versions=1.0
+workflows.syndicationContributionSupprimer.default=1.0
+
+workflows.majResume.versions=1.0
+workflows.majResume.default=1.0
+
+workflows.gererPublicationRubrique.versions=1.0
+workflows.gererPublicationRubrique.default=1.0
+
+workflows.synchroFavoris.versions=1.0, 1.1
+workflows.synchroFavoris.default=1.1
+
+workflows.historiserFavori.versions=1.0
+workflows.historiserFavori.default=1.0
+
+workflows.supprimerAvisSupport.versions=1.0, 1.1
+workflows.supprimerAvisSupport.default=1.1
+
+####  WORKFLOW DEFINITION
+# Exemple :
+# v1.0
+#myworkflow.1.0.branch=contribution.supprimerByUtilisateur,csm.supprimerAvatar
+#myworkflow.1.0.branch2.from=contribution.supprimerByUtilisateur
+#myworkflow.1.0.branch2.to=contribution.majnote,csm.supprimerJustificatif,templating.recuperer
+#
+# v1.1
+#myworkflow.1.1.branch=contribution.supprimerByUtilisateur,csm.supprimerAvatar
+#myworkflow.1.1.branch2.from=contribution.supprimerByUtilisateur
+#myworkflow.1.1.branch2.to=contribution.majnote,csm.supprimerJustificatif,templating.recuperer
+#myworkflow.1.1.branch3.from=contribution.majnote
+#myworkflow.1.1.branch3.to=cgcsp.majnote
+#myworkflow.1.1.branch4.from=templating.recuperer
+#myworkflow.1.1.branch4.to=contact.mail
+#
+# v1.2
+#myworkflow.1.2.branch=contribution.supprimerByUtilisateur,csm.supprimerAvatar
+#myworkflow.1.2.branch2.from=contribution.supprimerByUtilisateur
+#myworkflow.1.2.branch2.to=templating.recuperer
+#myworkflow.1.2.branch3.from=templating.recuperer
+#myworkflow.1.2.branch3.to=contact.mail
+
+majResume.1.0.branch=contribution.majResume
+majResume.1.0.branch2.from=contribution.majResume
+majResume.1.0.branch2.to=synchroRating.synchroResume
+
+# v1.0
+syndicationContributionSupport.1.0.branch=contribution.ajouterSupportAvis
+syndicationContributionSupport.1.0.branch2.from=contribution.ajouterSupportAvis
+syndicationContributionSupport.1.0.branch2.to=contribution.ajouterAvis
+syndicationContributionSupport.1.0.branch3.from=contribution.ajouterAvis
+syndicationContributionSupport.1.0.branch3.to=contribution.majResume
+syndicationContributionSupport.1.0.branch4.from=contribution.majResume
+syndicationContributionSupport.1.0.branch4.to=synchroRating.synchroResume
+# v1.1
+syndicationContributionSupport.1.1.branch=contribution.ajouterSupportAvis
+syndicationContributionSupport.1.1.branch2.from=contribution.ajouterSupportAvis
+syndicationContributionSupport.1.1.branch2.to=contribution.ajouterAvis
+# v1.2
+syndicationContributionSupport.1.2.branch=contribution.ajouterSupportAvis
+syndicationContributionSupport.1.2.branch2.from=contribution.ajouterSupportAvis
+syndicationContributionSupport.1.2.branch2.to=contribution.ajouterAvis
+syndicationContributionSupport.1.2.branch3.from=contribution.ajouterAvis
+syndicationContributionSupport.1.2.branch3.to=contribution.majResumeBatch
+# v1.3 OBSOLETE AU PROFIT DE workflows spécifiques (Ajout, Maj et Suppression)
+syndicationContributionSupport.1.3.branch=contribution.ajouterSupportAvis
+syndicationContributionSupport.1.3.branch2.from=contribution.ajouterSupportAvis
+syndicationContributionSupport.1.3.branch2.to=contribution.supprimerAvis
+syndicationContributionSupport.1.3.branch3.from=contribution.supprimerAvis
+syndicationContributionSupport.1.3.branch3.to=contribution.ajouterAvis
+syndicationContributionSupport.1.3.branch4.from=contribution.ajouterAvis
+syndicationContributionSupport.1.3.branch4.to=contribution.majResumeBatch
+
+# v1.0
+syndicationContributionAjouter.1.0.branch=contribution.ajouterSupportAvis
+syndicationContributionAjouter.1.0.branch2.from=contribution.ajouterSupportAvis
+syndicationContributionAjouter.1.0.branch2.to=contribution.ajouterAvis
+syndicationContributionAjouter.1.0.branch3.from=contribution.ajouterAvis
+syndicationContributionAjouter.1.0.branch3.to=contribution.majResumeBatch
+
+# v1.0
+syndicationContributionModifier.1.0.branch=contribution.ajouterSupportAvis
+syndicationContributionModifier.1.0.branch2.from=contribution.ajouterSupportAvis
+syndicationContributionModifier.1.0.branch2.to=contribution.supprimerAvis
+syndicationContributionModifier.1.0.branch3.from=contribution.supprimerAvis
+syndicationContributionModifier.1.0.branch3.to=contribution.ajouterAvis
+syndicationContributionModifier.1.0.branch4.from=contribution.ajouterAvis
+syndicationContributionModifier.1.0.branch4.to=contribution.majResumeBatch
+
+# v1.0
+syndicationContributionSupprimer.1.0.branch=contribution.supprimerAvis
+syndicationContributionSupprimer.1.0.branch2.from=contribution.supprimerAvis
+syndicationContributionSupprimer.1.0.branch2.to=contribution.majResumeBatch
+
+avisObsolete.1.0.branch=contribution.majAvis
+avisObsolete.1.0.branch2.from=contribution.majAvis
+avisObsolete.1.0.branch2.to=contribution.majResume
+avisObsolete.1.0.branch3.from=contribution.majResume
+avisObsolete.1.0.branch3.to=synchroRating.synchroResume
+
+# v1.0
+supprimerCompteAvecAvatar.1.0.branch=csm.supprimerMedia,contribution.diffuserAvisUtilisateur
+supprimerCompteAvecAvatar.1.0.branch2.from=contribution.diffuserAvisUtilisateur
+supprimerCompteAvecAvatar.1.0.branch2.to=contribution.supprimerAvis
+supprimerCompteAvecAvatar.1.0.branch3.from=contribution.supprimerAvis
+supprimerCompteAvecAvatar.1.0.branch3.to=contribution.historiser,contribution.majResume
+supprimerCompteAvecAvatar.1.0.branch4.from=contribution.majResume
+supprimerCompteAvecAvatar.1.0.branch4.to=synchroRating.synchroResume
+
+# v1.1
+supprimerCompteAvecAvatar.1.1.branch=csm.supprimerMedia,contribution.diffuserAvisUtilisateur,proprietes-utilisateur.diffuserFavorisUtilisateur
+supprimerCompteAvecAvatar.1.1.branch2.from=contribution.diffuserAvisUtilisateur
+supprimerCompteAvecAvatar.1.1.branch2.to=contribution.supprimerAvis
+supprimerCompteAvecAvatar.1.1.branch3.from=contribution.supprimerAvis
+supprimerCompteAvecAvatar.1.1.branch3.to=contribution.historiser,contribution.majResume
+supprimerCompteAvecAvatar.1.1.branch4.from=contribution.majResume
+supprimerCompteAvecAvatar.1.1.branch4.to=synchroRating.synchroResume
+supprimerCompteAvecAvatar.1.1.branch5.from=proprietes-utilisateur.diffuserFavorisUtilisateur
+supprimerCompteAvecAvatar.1.1.branch5.to=proprietes-utilisateur.supprimerFavori
+
+# v1.2
+supprimerCompteAvecAvatar.1.2.branch=csm.supprimerMedia,contribution.diffuserAvisUtilisateur,proprietes-utilisateur.diffuserFavorisUtilisateur
+supprimerCompteAvecAvatar.1.2.branch2.from=contribution.diffuserAvisUtilisateur
+supprimerCompteAvecAvatar.1.2.branch2.to=contribution.supprimerAvis
+supprimerCompteAvecAvatar.1.2.branch3.from=contribution.supprimerAvis
+supprimerCompteAvecAvatar.1.2.branch3.to=contribution.historiser,contribution.majResume
+supprimerCompteAvecAvatar.1.2.branch4.from=contribution.majResume
+supprimerCompteAvecAvatar.1.2.branch4.to=synchroRating.synchroResume
+supprimerCompteAvecAvatar.1.2.branch5.from=proprietes-utilisateur.diffuserFavorisUtilisateur
+supprimerCompteAvecAvatar.1.2.branch5.to=proprietes-utilisateur.supprimerFavori
+supprimerCompteAvecAvatar.1.2.branch6.from=proprietes-utilisateur.supprimerFavori
+supprimerCompteAvecAvatar.1.2.branch6.to=proprietes-utilisateur.historiserFavori
+
+# v1.0
+supprimerCompteSansAvatar.1.0.branch=contribution.diffuserAvisUtilisateur
+supprimerCompteSansAvatar.1.0.branch2.from=contribution.diffuserAvisUtilisateur
+supprimerCompteSansAvatar.1.0.branch2.to=contribution.supprimerAvis
+supprimerCompteSansAvatar.1.0.branch3.from=contribution.supprimerAvis
+supprimerCompteSansAvatar.1.0.branch3.to=contribution.historiser,contribution.majResume
+supprimerCompteSansAvatar.1.0.branch4.from=contribution.majResume
+supprimerCompteSansAvatar.1.0.branch4.to=synchroRating.synchroResume
+
+# v1.1
+supprimerCompteSansAvatar.1.1.branch=contribution.diffuserAvisUtilisateur,proprietes-utilisateur.diffuserFavorisUtilisateur
+supprimerCompteSansAvatar.1.1.branch2.from=contribution.diffuserAvisUtilisateur
+supprimerCompteSansAvatar.1.1.branch2.to=contribution.supprimerAvis
+supprimerCompteSansAvatar.1.1.branch3.from=contribution.supprimerAvis
+supprimerCompteSansAvatar.1.1.branch3.to=contribution.historiser,contribution.majResume
+supprimerCompteSansAvatar.1.1.branch4.from=contribution.majResume
+supprimerCompteSansAvatar.1.1.branch4.to=synchroRating.synchroResume
+supprimerCompteSansAvatar.1.1.branch5.from=proprietes-utilisateur.diffuserFavorisUtilisateur
+supprimerCompteSansAvatar.1.1.branch5.to=proprietes-utilisateur.supprimerFavori
+
+# v1.2
+supprimerCompteSansAvatar.1.2.branch=contribution.diffuserAvisUtilisateur,proprietes-utilisateur.diffuserFavorisUtilisateur
+supprimerCompteSansAvatar.1.2.branch2.from=contribution.diffuserAvisUtilisateur
+supprimerCompteSansAvatar.1.2.branch2.to=contribution.supprimerAvis
+supprimerCompteSansAvatar.1.2.branch3.from=contribution.supprimerAvis
+supprimerCompteSansAvatar.1.2.branch3.to=contribution.historiser,contribution.majResume
+supprimerCompteSansAvatar.1.2.branch4.from=contribution.majResume
+supprimerCompteSansAvatar.1.2.branch4.to=synchroRating.synchroResume
+supprimerCompteSansAvatar.1.2.branch5.from=proprietes-utilisateur.diffuserFavorisUtilisateur
+supprimerCompteSansAvatar.1.2.branch5.to=proprietes-utilisateur.supprimerFavori
+supprimerCompteSansAvatar.1.2.branch6.from=proprietes-utilisateur.supprimerFavori
+supprimerCompteSansAvatar.1.2.branch6.to=proprietes-utilisateur.historiserFavori
+
+# v1.0
+supprimerProfilAvecAvatar.1.0.branch=csm.supprimerMedia,contact.mailUtilisateur,contribution.diffuserAvisUtilisateur
+supprimerProfilAvecAvatar.1.0.branch2.from=contribution.diffuserAvisUtilisateur
+supprimerProfilAvecAvatar.1.0.branch2.to=contribution.supprimerAvis
+supprimerProfilAvecAvatar.1.0.branch3.from=contribution.supprimerAvis
+supprimerProfilAvecAvatar.1.0.branch3.to=contribution.historiser,contribution.majResume
+supprimerProfilAvecAvatar.1.0.branch4.from=contribution.majResume
+supprimerProfilAvecAvatar.1.0.branch4.to=synchroRating.synchroResume
+
+# v1.1
+supprimerProfilAvecAvatar.1.1.branch=csm.supprimerMedia,contact.mailUtilisateur,contribution.diffuserAvisUtilisateur,proprietes-utilisateur.diffuserFavorisUtilisateur
+supprimerProfilAvecAvatar.1.1.branch2.from=contribution.diffuserAvisUtilisateur
+supprimerProfilAvecAvatar.1.1.branch2.to=contribution.supprimerAvis
+supprimerProfilAvecAvatar.1.1.branch3.from=contribution.supprimerAvis
+supprimerProfilAvecAvatar.1.1.branch3.to=contribution.historiser,contribution.majResume
+supprimerProfilAvecAvatar.1.1.branch4.from=contribution.majResume
+supprimerProfilAvecAvatar.1.1.branch4.to=synchroRating.synchroResume
+supprimerProfilAvecAvatar.1.1.branch5.from=proprietes-utilisateur.diffuserFavorisUtilisateur
+supprimerProfilAvecAvatar.1.1.branch5.to=proprietes-utilisateur.supprimerFavori
+
+# v1.2
+supprimerProfilAvecAvatar.1.2.branch=csm.supprimerMedia,contact.mailUtilisateur,contribution.diffuserAvisUtilisateur,proprietes-utilisateur.diffuserFavorisUtilisateur
+supprimerProfilAvecAvatar.1.2.branch2.from=contribution.diffuserAvisUtilisateur
+supprimerProfilAvecAvatar.1.2.branch2.to=contribution.supprimerAvis
+supprimerProfilAvecAvatar.1.2.branch3.from=contribution.supprimerAvis
+supprimerProfilAvecAvatar.1.2.branch3.to=contribution.historiser,contribution.majResume
+supprimerProfilAvecAvatar.1.2.branch4.from=contribution.majResume
+supprimerProfilAvecAvatar.1.2.branch4.to=synchroRating.synchroResume
+supprimerProfilAvecAvatar.1.2.branch5.from=proprietes-utilisateur.diffuserFavorisUtilisateur
+supprimerProfilAvecAvatar.1.2.branch5.to=proprietes-utilisateur.supprimerFavori
+supprimerProfilAvecAvatar.1.2.branch6.from=proprietes-utilisateur.supprimerFavori
+supprimerProfilAvecAvatar.1.2.branch6.to=proprietes-utilisateur.historiserFavori
+
+# v1.0
+supprimerProfilSansAvatar.1.0.branch=contact.mailUtilisateur,contribution.diffuserAvisUtilisateur
+supprimerProfilSansAvatar.1.0.branch2.from=contribution.diffuserAvisUtilisateur
+supprimerProfilSansAvatar.1.0.branch2.to=contribution.supprimerAvis
+supprimerProfilSansAvatar.1.0.branch3.from=contribution.supprimerAvis
+supprimerProfilSansAvatar.1.0.branch3.to=contribution.historiser,contribution.majResume
+supprimerProfilSansAvatar.1.0.branch4.from=contribution.majResume
+supprimerProfilSansAvatar.1.0.branch4.to=synchroRating.synchroResume
+
+# v1.1
+supprimerProfilSansAvatar.1.1.branch=contact.mailUtilisateur,contribution.diffuserAvisUtilisateur,proprietes-utilisateur.diffuserFavorisUtilisateur
+supprimerProfilSansAvatar.1.1.branch2.from=contribution.diffuserAvisUtilisateur
+supprimerProfilSansAvatar.1.1.branch2.to=contribution.supprimerAvis
+supprimerProfilSansAvatar.1.1.branch3.from=contribution.supprimerAvis
+supprimerProfilSansAvatar.1.1.branch3.to=contribution.historiser,contribution.majResume
+supprimerProfilSansAvatar.1.1.branch4.from=contribution.majResume
+supprimerProfilSansAvatar.1.1.branch4.to=synchroRating.synchroResume
+supprimerProfilSansAvatar.1.1.branch5.from=proprietes-utilisateur.diffuserFavorisUtilisateur
+supprimerProfilSansAvatar.1.1.branch5.to=proprietes-utilisateur.supprimerFavori
+
+# v1.2
+supprimerProfilSansAvatar.1.2.branch=contact.mailUtilisateur,contribution.diffuserAvisUtilisateur,proprietes-utilisateur.diffuserFavorisUtilisateur
+supprimerProfilSansAvatar.1.2.branch2.from=contribution.diffuserAvisUtilisateur
+supprimerProfilSansAvatar.1.2.branch2.to=contribution.supprimerAvis
+supprimerProfilSansAvatar.1.2.branch3.from=contribution.supprimerAvis
+supprimerProfilSansAvatar.1.2.branch3.to=contribution.historiser,contribution.majResume
+supprimerProfilSansAvatar.1.2.branch4.from=contribution.majResume
+supprimerProfilSansAvatar.1.2.branch4.to=synchroRating.synchroResume
+supprimerProfilSansAvatar.1.2.branch5.from=proprietes-utilisateur.diffuserFavorisUtilisateur
+supprimerProfilSansAvatar.1.2.branch5.to=proprietes-utilisateur.supprimerFavori
+supprimerProfilSansAvatar.1.2.branch6.from=proprietes-utilisateur.supprimerFavori
+supprimerProfilSansAvatar.1.2.branch6.to=proprietes-utilisateur.historiserFavori
+
+supprimerAvatar.1.0.branch=csm.supprimerMedia
+
+modererPremierPseudoUtilisateur.1.0.branch=contact.mailUtilisateur,contribution.envoyerModerationAvisUtilisateur,contribution.majPhotosUtilisateur,contribution.majSaAvisUtilisateur,contribution.majSaPhotosUtilisateur,contribution.majSaDdrsUtilisateur
+modererPremierPseudoUtilisateur.1.0.branch2.from=contribution.envoyerModerationAvisUtilisateur
+modererPremierPseudoUtilisateur.1.0.branch2.to=contribution.envoyerModerationAvis
+modererPremierPseudoUtilisateur.1.0.branch3.from=contribution.envoyerModerationAvis
+modererPremierPseudoUtilisateur.1.0.branch3.to=contribution.historiser
+modererPremierPseudoUtilisateur.1.0.branch4.from=contribution.majPhotosUtilisateur
+modererPremierPseudoUtilisateur.1.0.branch4.to=contribution.majPhoto
+modererPremierPseudoUtilisateur.1.0.branch5.from=contribution.majPhoto
+modererPremierPseudoUtilisateur.1.0.branch5.to=contribution.historiser
+modererPremierPseudoUtilisateur.1.0.branch6.from=contribution.majSaAvisUtilisateur
+modererPremierPseudoUtilisateur.1.0.branch6.to=contribution.majSaAvis
+modererPremierPseudoUtilisateur.1.0.branch7.from=contribution.majSaAvis
+modererPremierPseudoUtilisateur.1.0.branch7.to=contribution.historiser
+modererPremierPseudoUtilisateur.1.0.branch8.from=contribution.majSaDdrsUtilisateur
+modererPremierPseudoUtilisateur.1.0.branch8.to=contribution.majSaDdr
+modererPremierPseudoUtilisateur.1.0.branch9.from=contribution.majSaDdr
+modererPremierPseudoUtilisateur.1.0.branch9.to=contribution.historiser
+modererPremierPseudoUtilisateur.1.0.branch10.from=contribution.majSaPhotosUtilisateur
+modererPremierPseudoUtilisateur.1.0.branch10.to=contribution.majSaPhoto
+modererPremierPseudoUtilisateur.1.0.branch11.from=contribution.majSaPhoto
+modererPremierPseudoUtilisateur.1.0.branch11.to=contribution.historiser
+
+modererPremierPseudoEtAvatarUtilisateur.1.0.branch=contact.mailUtilisateur,csm.majMedia,contribution.envoyerModerationAvisUtilisateur,contribution.majPhotosUtilisateur,contribution.majSaAvisUtilisateur,contribution.majSaPhotosUtilisateur,contribution.majSaDdrsUtilisateur
+modererPremierPseudoEtAvatarUtilisateur.1.0.branch2.from=contribution.envoyerModerationAvisUtilisateur
+modererPremierPseudoEtAvatarUtilisateur.1.0.branch2.to=contribution.envoyerModerationAvis
+modererPremierPseudoEtAvatarUtilisateur.1.0.branch3.from=contribution.envoyerModerationAvis
+modererPremierPseudoEtAvatarUtilisateur.1.0.branch3.to=contribution.historiser
+modererPremierPseudoEtAvatarUtilisateur.1.0.branch4.from=contribution.majPhotosUtilisateur
+modererPremierPseudoEtAvatarUtilisateur.1.0.branch4.to=contribution.majPhoto
+modererPremierPseudoEtAvatarUtilisateur.1.0.branch5.from=contribution.majPhoto
+modererPremierPseudoEtAvatarUtilisateur.1.0.branch5.to=contribution.historiser
+modererPremierPseudoEtAvatarUtilisateur.1.0.branch6.from=contribution.majSaAvisUtilisateur
+modererPremierPseudoEtAvatarUtilisateur.1.0.branch6.to=contribution.majSaAvis
+modererPremierPseudoEtAvatarUtilisateur.1.0.branch7.from=contribution.majSaAvis
+modererPremierPseudoEtAvatarUtilisateur.1.0.branch7.to=contribution.historiser
+modererPremierPseudoEtAvatarUtilisateur.1.0.branch8.from=contribution.majSaPhotosUtilisateur
+modererPremierPseudoEtAvatarUtilisateur.1.0.branch8.to=contribution.majSaPhoto
+modererPremierPseudoEtAvatarUtilisateur.1.0.branch9.from=contribution.majSaPhoto
+modererPremierPseudoEtAvatarUtilisateur.1.0.branch9.to=contribution.historiser
+modererPremierPseudoEtAvatarUtilisateur.1.0.branch10.from=contribution.majSaDdrsUtilisateur
+modererPremierPseudoEtAvatarUtilisateur.1.0.branch10.to=contribution.majSaDdr
+modererPremierPseudoEtAvatarUtilisateur.1.0.branch11.from=contribution.majSaDdr
+modererPremierPseudoEtAvatarUtilisateur.1.0.branch11.to=contribution.historiser
+
+blacklisterProAvis.1.0.branch=contribution.majAvisSupport
+blacklisterProAvis.1.0.branch2.from=contribution.majAvisSupport
+blacklisterProAvis.1.0.branch2.to=contribution.majAvis
+blacklisterProAvis.1.0.branch3.from=contribution.majAvis
+blacklisterProAvis.1.0.branch3.to=contribution.historiser,contribution.majResume
+blacklisterProAvis.1.0.branch4.from=contribution.majResume
+blacklisterProAvis.1.0.branch4.to=synchroRating.synchroResume
+
+blacklisterProPhotos.1.0.branch=contribution.majPhotosSupport
+blacklisterProPhotos.1.0.branch2.from=contribution.majPhotosSupport
+blacklisterProPhotos.1.0.branch2.to=contribution.majPhoto
+blacklisterProPhotos.1.0.branch3.from=contribution.majPhoto
+blacklisterProPhotos.1.0.branch3.to=contribution.historiser
+
+desactiverCompte.1.0.branch=contact.mailUtilisateur,contribution.diffuserAvisUtilisateur
+desactiverCompte.1.0.branch2.from=contribution.diffuserAvisUtilisateur
+desactiverCompte.1.0.branch2.to=contribution.majAvis
+desactiverCompte.1.0.branch3.from=contribution.majAvis
+desactiverCompte.1.0.branch3.to=contribution.historiser,contribution.majResume
+desactiverCompte.1.0.branch4.from=contribution.majResume
+desactiverCompte.1.0.branch4.to=synchroRating.synchroResume
+
+reinitialiserPro.1.0.branch=contribution.majPhotosSupport,contribution.majAvisSupport
+reinitialiserPro.1.0.branch2.from=contribution.majPhotosSupport
+reinitialiserPro.1.0.branch2.to=contribution.majPhoto
+reinitialiserPro.1.0.branch3.from=contribution.majPhoto
+reinitialiserPro.1.0.branch3.to=contribution.historiser
+reinitialiserPro.1.0.branch4.from=contribution.majAvisSupport
+reinitialiserPro.1.0.branch4.to=contribution.majAvis
+reinitialiserPro.1.0.branch5.from=contribution.majAvis
+reinitialiserPro.1.0.branch5.to=contribution.historiser,contribution.majResume
+reinitialiserPro.1.0.branch6.from=contribution.majResume
+reinitialiserPro.1.0.branch6.to=synchroRating.synchroResume
+
+reinitialiserProAvis.1.0.branch=contribution.majAvisSupport
+reinitialiserProAvis.1.0.branch2.from=contribution.majAvisSupport
+reinitialiserProAvis.1.0.branch2.to=contribution.majAvis
+reinitialiserProAvis.1.0.branch3.from=contribution.majAvis
+reinitialiserProAvis.1.0.branch3.to=contribution.historiser,contribution.majResume
+reinitialiserProAvis.1.0.branch4.from=contribution.majResume
+reinitialiserProAvis.1.0.branch4.to=synchroRating.synchroResume
+
+reinitialiserProPhoto.1.0.branch=contribution.majPhotosSupport
+reinitialiserProPhoto.1.0.branch2.from=contribution.majPhotosSupport
+reinitialiserProPhoto.1.0.branch2.to=contribution.majPhoto
+reinitialiserProPhoto.1.0.branch3.from=contribution.majPhoto
+reinitialiserProPhoto.1.0.branch3.to=contribution.historiser
+
+supprimerAvis.1.0.branch=contribution.historiser,contribution.majResume
+supprimerAvis.1.0.branch2.from=contribution.majResume
+supprimerAvis.1.0.branch2.to=synchroRating.synchroResume
+
+#OBSOLETE AU PROFIT DE modifierAvis
+remplacerAvis.1.0.branch=contribution.historiserRemplacer,contribution.majResume
+remplacerAvis.1.0.branch2.from=contribution.historiserRemplacer
+remplacerAvis.1.0.branch2.to=contribution.historiser
+remplacerAvis.1.0.branch3.from=contribution.majResume
+remplacerAvis.1.0.branch3.to=synchroRating.synchroResume
+
+modifierAvis.1.0.branch=contribution.historiser,contribution.supprimerAvisAncetre
+modifierAvis.1.0.branch2.from=contribution.supprimerAvisAncetre
+modifierAvis.1.0.branch2.to=contribution.historiser
+
+# v1.0
+modererAvisPositif.1.0.branch=contact.mailContribution,contribution.historiser,contribution.majResume,annonceur.avertir
+modererAvisPositif.1.0.branch2.from=contribution.majResume
+modererAvisPositif.1.0.branch2.to=synchroRating.synchroResume
+
+# v1.1
+modererAvisPositif.1.1.branch=contact.mailContribution,contribution.historiser,contribution.majResume,annonceur.avertir,partenaires.avertirPartenaire
+modererAvisPositif.1.1.branch2.from=contribution.majResume
+modererAvisPositif.1.1.branch2.to=synchroRating.synchroResume
+
+modererAvisNegatif.1.0.branch=contact.mailContribution,contribution.historiser,contribution.majResume
+modererAvisNegatif.1.0.branch2.from=contribution.majResume
+modererAvisNegatif.1.0.branch2.to=synchroRating.synchroResume
+
+#OBSOLETE AU PROFIT DE modererDdrNegatif et modererDdrPositif
+modererDdr.1.0.branch=contribution.historiser,annonceur.avertir
+
+modererDdrNegatif.1.0.branch=contribution.historiser,annonceur.avertir
+
+modererDdrPositif.1.0.branch=contribution.historiser,annonceur.avertir,contact.mailContribution
+
+modererSignalementAbusAvisPositif.1.0.branch=contact.mailContribution,contribution.historiser,contribution.refuserAvis
+modererSignalementAbusAvisPositif.1.0.branch2.from=contribution.refuserAvis
+modererSignalementAbusAvisPositif.1.0.branch2.to=contact.mailContribution,contribution.historiser,contribution.majResume
+modererSignalementAbusAvisPositif.1.0.branch3.from=contribution.majResume
+modererSignalementAbusAvisPositif.1.0.branch3.to=synchroRating.synchroResume
+
+modererSignalementAbusPhotoPositif.1.0.branch=contact.mailContribution,contribution.historiser,contribution.refuserPhoto
+modererSignalementAbusPhotoPositif.1.0.branch2.from=contribution.refuserPhoto
+modererSignalementAbusPhotoPositif.1.0.branch2.to=contact.mailContribution,contribution.historiser,csm.majMedia
+
+modererSignalementAbusDdrPositif.1.0.branch=contact.mailContribution,contribution.historiser,contribution.refuserDdr
+modererSignalementAbusDdrPositif.1.0.branch2.from=contribution.refuserDdr
+modererSignalementAbusDdrPositif.1.0.branch2.to=contribution.historiser,annonceur.avertir
+
+historiser.1.0.branch=contribution.historiser
+
+historiserContacter.1.0.branch=contribution.historiser,contact.mailContribution
+
+contacter.1.0.branch=contact.mailUtilisateur
+
+contacterMajMedia.1.0.branch=contact.mailUtilisateur,csm.majMedia
+
+#OBSOLETE AU PROFIT DE modererPhotoAgc
+historiserAvertir.1.0.branch=contribution.historiser,annonceur.avertir
+
+# v1.0
+modererPhotoAgc.1.0.branch=contribution.historiser,annonceur.avertir,csm.majMedia
+
+# v1.1
+modererPhotoAgc.1.1.branch=contribution.historiser,annonceur.avertir,csm.majMedia,trt-hors-worc.autocompletionPhotoAgc
+
+# v1.0
+modererPhotoUgc.1.0.branch=contribution.historiser,contact.mailContribution,csm.majMedia
+
+# v1.1
+modererPhotoUgc.1.1.branch=contribution.historiser,contact.mailContribution,csm.majMedia,trt-hors-worc.autocompletionPhotoUgc
+
+gererPublicationRubrique.1.0.branch=contribution.majAvisRubrique
+gererPublicationRubrique.1.0.branch2.from=contribution.majAvisRubrique
+gererPublicationRubrique.1.0.branch2.to=contribution.majAvis
+gererPublicationRubrique.1.0.branch3.from=contribution.majAvis
+gererPublicationRubrique.1.0.branch3.to=contribution.historiser,contribution.majResumeBatch
+
+
+# v1.0
+synchroFavoris.1.0.branch=proprietes-utilisateur.synchroFavorisUtilisateur
+synchroFavoris.1.0.branch2.from=proprietes-utilisateur.synchroFavorisUtilisateur
+synchroFavoris.1.0.branch2.to=proprietes-utilisateur.synchroFavori
+
+# v1.1
+synchroFavoris.1.1.branch=proprietes-utilisateur.synchroFavorisUtilisateur
+synchroFavoris.1.1.branch2.from=proprietes-utilisateur.synchroFavorisUtilisateur
+synchroFavoris.1.1.branch2.to=proprietes-utilisateur.synchroFavori
+synchroFavoris.1.1.branch3.from=proprietes-utilisateur.synchroFavori
+synchroFavoris.1.1.branch3.to=proprietes-utilisateur.historiserFavori
+
+historiserFavori.1.0.branch=proprietes-utilisateur.historiserFavori
+
+
+# supprimerAvisSupport -> v1.0
+supprimerAvisSupport.1.0.branch=contribution.majAvisSupport
+supprimerAvisSupport.1.0.branch2.from=contribution.majAvisSupport
+supprimerAvisSupport.1.0.branch2.to=contribution.supprimerAvis
+supprimerAvisSupport.1.0.branch3.from=contribution.supprimerAvis
+supprimerAvisSupport.1.0.branch3.to=contribution.majResumeBatch
+
+# v1.1
+supprimerAvisSupport.1.1.branch=contribution.genererFichierSuppAvisPart
