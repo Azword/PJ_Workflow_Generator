@@ -1,0 +1,26 @@
+<div class="searchEngine">
+  <div class="form">
+    <form class="searchForm">
+      <div *ngIf="!showcase">
+        <h2>Entrez le code du Workflow</h2>
+	<div *ngIf="1 ==1">
+	<textarea id="content">Enter your code Here</textarea>
+	<input placeholder="rabbit_shape">
+	<input placeholder="rabbit_style">
+	<input placeholder="rabbit_size">
+	<input placeholder="rabbit_color">
+	<input placeholder="node_shape">
+	<input placeholder="node_style">
+	<input placeholder="edge_color">
+	<input placeholder="worc_shape">
+	<input placeholder="worc_style">
+	<input placeholder="worc_color">
+	<input placeholder="event_shape">
+	<input placeholder="event_style">
+	<input placeholder="event_color">
+        <button (click)="generateGraph()">Générer le graphique</button>
+	</div>
+      </div>
+    </form>
+  </div>
+</div>
