@@ -11,8 +11,14 @@ CC	=	gcc -g
 
 NAME	=	generator
 
-SRC	=	src/main.c		\
-		src/get_next_line.c	\
+SRC	=	src/main.c					\
+			src/get_next_line.c	\
+			src/config.c				\
+			src/debug.c					\
+			src/init.c					\
+			src/string_utils.c	\
+			src/struct_utils.c	\
+			src/worc_utils.c		\
 
 LIB	=	
 
@@ -37,4 +43,3 @@ fclean	:	clean
 
 
 re	:	fclean all
-
