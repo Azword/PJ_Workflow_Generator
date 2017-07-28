@@ -1,3 +1,306 @@
+###
+# !!! WARNING !!! !!! WARNING !!! !!! WARNING !!! !!! WARNING !!! !!! WARNING !!! !!! WARNING !!! !!! WARNING !!! !!! WARNING !!!
+# !!! WARNING !!! !!! WARNING !!! !!! WARNING !!! !!! WARNING !!! !!! WARNING !!! !!! WARNING !!! !!! WARNING !!! !!! WARNING !!!
+# !!! WARNING !!! !!! WARNING !!! !!! WARNING !!! !!! WARNING !!! !!! WARNING !!! !!! WARNING !!! !!! WARNING !!! !!! WARNING !!!
+###
+
+# CE FICHIER EST LE FICHIER ACTUEL (ET NON LA CIBLE) DONC AVEC UN FONCTIONNEMENT **SANS** DOMAINE
+# FICHIER A SUPPRIMER QUAND LE FONCTIONNEMENT **AVEC** DOMAINE SERA MIS EN PLACE PARTOUT DANS MORE
+
+###
+# !!! WARNING !!! !!! WARNING !!! !!! WARNING !!! !!! WARNING !!! !!! WARNING !!! !!! WARNING !!! !!! WARNING !!! !!! WARNING !!!
+# !!! WARNING !!! !!! WARNING !!! !!! WARNING !!! !!! WARNING !!! !!! WARNING !!! !!! WARNING !!! !!! WARNING !!! !!! WARNING !!!
+# !!! WARNING !!! !!! WARNING !!! !!! WARNING !!! !!! WARNING !!! !!! WARNING !!! !!! WARNING !!! !!! WARNING !!! !!! WARNING !!!
+###
+
+
+#######################################
+###################
+################### WORKFLOWS
+###################
+#######################################
+
+#### WORKFLOW LIST
+# Exemple :
+# workflows.myworkflow.versions=1.0, 1.1, 1.2
+# workflows.myworkflow.default=1.2
+
+workflows.supprimerCompteAvecAvatar.versions=1.0, 1.1, 1.2
+workflows.supprimerCompteAvecAvatar.default=1.2
+
+workflows.supprimerCompteSansAvatar.versions=1.0, 1.1, 1.2
+workflows.supprimerCompteSansAvatar.default=1.2
+
+workflows.supprimerProfilAvecAvatar.versions=1.0, 1.1, 1.2
+workflows.supprimerProfilAvecAvatar.default=1.2
+
+workflows.supprimerProfilSansAvatar.versions=1.0, 1.1, 1.2
+workflows.supprimerProfilSansAvatar.default=1.2
+
+workflows.supprimerAvatar.versions=1.0
+workflows.supprimerAvatar.default=1.0
+
+workflows.modererPremierPseudoUtilisateur.versions=1.0
+workflows.modererPremierPseudoUtilisateur.default=1.0
+
+workflows.modererPremierPseudoEtAvatarUtilisateur.versions=1.0
+workflows.modererPremierPseudoEtAvatarUtilisateur.default=1.0
+
+workflows.blacklisterProAvis.versions=1.0
+workflows.blacklisterProAvis.default=1.0
+
+workflows.blacklisterProPhotos.versions=1.0
+workflows.blacklisterProPhotos.default=1.0
+
+workflows.desactiverCompte.versions=1.0
+workflows.desactiverCompte.default=1.0
+
+workflows.reinitialiserPro.versions=1.0
+workflows.reinitialiserPro.default=1.0
+
+workflows.reinitialiserProAvis.versions=1.0
+workflows.reinitialiserProAvis.default=1.0
+
+workflows.reinitialiserProPhoto.versions=1.0
+workflows.reinitialiserProPhoto.default=1.0
+
+workflows.supprimerAvis.versions=1.0
+workflows.supprimerAvis.default=1.0
+
+# OBSOLETE AU PROFIT DE modifierAvis
+workflows.remplacerAvis.versions=1.0
+workflows.remplacerAvis.default=1.0
+
+workflows.modifierAvis.versions=1.0
+workflows.modifierAvis.default=1.0
+
+workflows.modererAvisPositif.versions=1.0, 1.1
+workflows.modererAvisPositif.default=1.1
+
+workflows.modererAvisNegatif.versions=1.0
+workflows.modererAvisNegatif.default=1.0
+
+# OBSOLETE AU PROFIT DE modererDdrNegatif et modererDdrPositif
+workflows.modererDdr.versions=1.0
+workflows.modererDdr.default=1.0
+
+workflows.modererDdrNegatif.versions=1.0
+workflows.modererDdrNegatif.default=1.0
+workflows.modererDdrNegatif.info=https://wiki.services.local/pages/viewpage.action?pageId=82246066
+
+workflows.modererDdrPositif.versions=1.0
+workflows.modererDdrPositif.default=1.0
+workflows.modererDdrPositif.info=https://wiki.services.local/pages/viewpage.action?pageId=82246069
+
+workflows.modererSignalementAbusAvisPositif.versions=1.0
+workflows.modererSignalementAbusAvisPositif.default=1.0
+
+workflows.modererSignalementAbusPhotoPositif.versions=1.0
+workflows.modererSignalementAbusPhotoPositif.default=1.0
+
+workflows.modererSignalementAbusDdrPositif.versions=1.0
+workflows.modererSignalementAbusDdrPositif.default=1.0
+
+workflows.historiser.versions=1.0
+workflows.historiser.default=1.0
+
+workflows.historiserContacter.versions=1.0
+workflows.historiserContacter.default=1.0
+
+workflows.contacter.versions=1.0
+workflows.contacter.default=1.0
+
+workflows.contacterMajMedia.versions=1.0
+workflows.contacterMajMedia.default=1.0
+
+# OBSOLETE AU PROFIT DE modererPhotoAgc
+workflows.historiserAvertir.versions=1.0
+workflows.historiserAvertir.default=1.0
+
+workflows.modererPhotoAgc.versions=1.0, 1.1
+workflows.modererPhotoAgc.default=1.1
+
+workflows.modererPhotoUgc.versions=1.0, 1.1
+workflows.modererPhotoUgc.default=1.1
+
+workflows.avisObsolete.versions=1.0
+workflows.avisObsolete.default=1.0
+
+# OBSOLETE AU PROFIT DE workflows spécifiques (Ajout, Maj et Suppression)
+workflows.syndicationContributionSupport.versions=1.0, 1.1, 1.2, 1.3
+workflows.syndicationContributionSupport.default=1.2
+
+workflows.syndicationContributionAjouter.versions=1.0
+workflows.syndicationContributionAjouter.default=1.0
+
+workflows.syndicationContributionModifier.versions=1.0
+workflows.syndicationContributionModifier.default=1.0
+
+workflows.syndicationContributionSupprimer.versions=1.0
+workflows.syndicationContributionSupprimer.default=1.0
+
+workflows.majResume.versions=1.0
+workflows.majResume.default=1.0
+
+workflows.gererPublicationRubrique.versions=1.0
+workflows.gererPublicationRubrique.default=1.0
+
+workflows.synchroFavoris.versions=1.0, 1.1
+workflows.synchroFavoris.default=1.1
+
+workflows.historiserFavori.versions=1.0
+workflows.historiserFavori.default=1.0
+
+workflows.supprimerAvisSupport.versions=1.0, 1.1
+workflows.supprimerAvisSupport.default=1.1
+
+####  WORKFLOW DEFINITION
+# Exemple :
+# v1.0
+#myworkflow.1.0.branch=contribution.supprimerByUtilisateur,csm.supprimerAvatar
+#myworkflow.1.0.branch2.from=contribution.supprimerByUtilisateur
+#myworkflow.1.0.branch2.to=contribution.majnote,csm.supprimerJustificatif,templating.recuperer
+#
+# v1.1
+#myworkflow.1.1.branch=contribution.supprimerByUtilisateur,csm.supprimerAvatar
+#myworkflow.1.1.branch2.from=contribution.supprimerByUtilisateur
+#myworkflow.1.1.branch2.to=contribution.majnote,csm.supprimerJustificatif,templating.recuperer
+#myworkflow.1.1.branch3.from=contribution.majnote
+#myworkflow.1.1.branch3.to=cgcsp.majnote
+#myworkflow.1.1.branch4.from=templating.recuperer
+#myworkflow.1.1.branch4.to=contact.mail
+#
+# v1.2
+#myworkflow.1.2.branch=contribution.supprimerByUtilisateur,csm.supprimerAvatar
+#myworkflow.1.2.branch2.from=contribution.supprimerByUtilisateur
+#myworkflow.1.2.branch2.to=templating.recuperer
+#myworkflow.1.2.branch3.from=templating.recuperer
+#myworkflow.1.2.branch3.to=contact.mail
+
+majResume.1.0.branch=contribution.majResume
+majResume.1.0.branch2.from=contribution.majResume
+majResume.1.0.branch2.to=synchroRating.synchroResume
+
+# v1.0
+syndicationContributionSupport.1.0.branch=contribution.ajouterSupportAvis
+syndicationContributionSupport.1.0.branch2.from=contribution.ajouterSupportAvis
+syndicationContributionSupport.1.0.branch2.to=contribution.ajouterAvis
+syndicationContributionSupport.1.0.branch3.from=contribution.ajouterAvis
+syndicationContributionSupport.1.0.branch3.to=contribution.majResume
+syndicationContributionSupport.1.0.branch4.from=contribution.majResume
+syndicationContributionSupport.1.0.branch4.to=synchroRating.synchroResume
+# v1.1
+syndicationContributionSupport.1.1.branch=contribution.ajouterSupportAvis
+syndicationContributionSupport.1.1.branch2.from=contribution.ajouterSupportAvis
+syndicationContributionSupport.1.1.branch2.to=contribution.ajouterAvis
+# v1.2
+syndicationContributionSupport.1.2.branch=contribution.ajouterSupportAvis
+syndicationContributionSupport.1.2.branch2.from=contribution.ajouterSupportAvis
+syndicationContributionSupport.1.2.branch2.to=contribution.ajouterAvis
+syndicationContributionSupport.1.2.branch3.from=contribution.ajouterAvis
+syndicationContributionSupport.1.2.branch3.to=contribution.majResumeBatch
+# v1.3 OBSOLETE AU PROFIT DE workflows spécifiques (Ajout, Maj et Suppression)
+syndicationContributionSupport.1.3.branch=contribution.ajouterSupportAvis
+syndicationContributionSupport.1.3.branch2.from=contribution.ajouterSupportAvis
+syndicationContributionSupport.1.3.branch2.to=contribution.supprimerAvis
+syndicationContributionSupport.1.3.branch3.from=contribution.supprimerAvis
+syndicationContributionSupport.1.3.branch3.to=contribution.ajouterAvis
+syndicationContributionSupport.1.3.branch4.from=contribution.ajouterAvis
+syndicationContributionSupport.1.3.branch4.to=contribution.majResumeBatch
+
+# v1.0
+syndicationContributionAjouter.1.0.branch=contribution.ajouterSupportAvis
+syndicationContributionAjouter.1.0.branch2.from=contribution.ajouterSupportAvis
+syndicationContributionAjouter.1.0.branch2.to=contribution.ajouterAvis
+syndicationContributionAjouter.1.0.branch3.from=contribution.ajouterAvis
+syndicationContributionAjouter.1.0.branch3.to=contribution.majResumeBatch
+
+# v1.0
+syndicationContributionModifier.1.0.branch=contribution.ajouterSupportAvis
+syndicationContributionModifier.1.0.branch2.from=contribution.ajouterSupportAvis
+syndicationContributionModifier.1.0.branch2.to=contribution.supprimerAvis
+syndicationContributionModifier.1.0.branch3.from=contribution.supprimerAvis
+syndicationContributionModifier.1.0.branch3.to=contribution.ajouterAvis
+syndicationContributionModifier.1.0.branch4.from=contribution.ajouterAvis
+syndicationContributionModifier.1.0.branch4.to=contribution.majResumeBatch
+
+# v1.0
+syndicationContributionSupprimer.1.0.branch=contribution.supprimerAvis
+syndicationContributionSupprimer.1.0.branch2.from=contribution.supprimerAvis
+syndicationContributionSupprimer.1.0.branch2.to=contribution.majResumeBatch
+
+avisObsolete.1.0.branch=contribution.majAvis
+avisObsolete.1.0.branch2.from=contribution.majAvis
+avisObsolete.1.0.branch2.to=contribution.majResume
+avisObsolete.1.0.branch3.from=contribution.majResume
+avisObsolete.1.0.branch3.to=synchroRating.synchroResume
+
+# v1.0
+supprimerCompteAvecAvatar.1.0.branch=csm.supprimerMedia,contribution.diffuserAvisUtilisateur
+supprimerCompteAvecAvatar.1.0.branch2.from=contribution.diffuserAvisUtilisateur
+supprimerCompteAvecAvatar.1.0.branch2.to=contribution.supprimerAvis
+supprimerCompteAvecAvatar.1.0.branch3.from=contribution.supprimerAvis
+supprimerCompteAvecAvatar.1.0.branch3.to=contribution.historiser,contribution.majResume
+supprimerCompteAvecAvatar.1.0.branch4.from=contribution.majResume
+supprimerCompteAvecAvatar.1.0.branch4.to=synchroRating.synchroResume
+
+# v1.1
+supprimerCompteAvecAvatar.1.1.branch=csm.supprimerMedia,contribution.diffuserAvisUtilisateur,proprietes-utilisateur.diffuserFavorisUtilisateur
+supprimerCompteAvecAvatar.1.1.branch2.from=contribution.diffuserAvisUtilisateur
+supprimerCompteAvecAvatar.1.1.branch2.to=contribution.supprimerAvis
+supprimerCompteAvecAvatar.1.1.branch3.from=contribution.supprimerAvis
+supprimerCompteAvecAvatar.1.1.branch3.to=contribution.historiser,contribution.majResume
+supprimerCompteAvecAvatar.1.1.branch4.from=contribution.majResume
+supprimerCompteAvecAvatar.1.1.branch4.to=synchroRating.synchroResume
+supprimerCompteAvecAvatar.1.1.branch5.from=proprietes-utilisateur.diffuserFavorisUtilisateur
+supprimerCompteAvecAvatar.1.1.branch5.to=proprietes-utilisateur.supprimerFavori
+
+# v1.2
+supprimerCompteAvecAvatar.1.2.branch=csm.supprimerMedia,contribution.diffuserAvisUtilisateur,proprietes-utilisateur.diffuserFavorisUtilisateur
+supprimerCompteAvecAvatar.1.2.branch2.from=contribution.diffuserAvisUtilisateur
+supprimerCompteAvecAvatar.1.2.branch2.to=contribution.supprimerAvis
+supprimerCompteAvecAvatar.1.2.branch3.from=contribution.supprimerAvis
+supprimerCompteAvecAvatar.1.2.branch3.to=contribution.historiser,contribution.majResume
+supprimerCompteAvecAvatar.1.2.branch4.from=contribution.majResume
+supprimerCompteAvecAvatar.1.2.branch4.to=synchroRating.synchroResume
+supprimerCompteAvecAvatar.1.2.branch5.from=proprietes-utilisateur.diffuserFavorisUtilisateur
+supprimerCompteAvecAvatar.1.2.branch5.to=proprietes-utilisateur.supprimerFavori
+supprimerCompteAvecAvatar.1.2.branch6.from=proprietes-utilisateur.supprimerFavori
+supprimerCompteAvecAvatar.1.2.branch6.to=proprietes-utilisateur.historiserFavori
+
+# v1.0
+supprimerCompteSansAvatar.1.0.branch=contribution.diffuserAvisUtilisateur
+supprimerCompteSansAvatar.1.0.branch2.from=contribution.diffuserAvisUtilisateur
+supprimerCompteSansAvatar.1.0.branch2.to=contribution.supprimerAvis
+supprimerCompteSansAvatar.1.0.branch3.from=contribution.supprimerAvis
+supprimerCompteSansAvatar.1.0.branch3.to=contribution.historiser,contribution.majResume
+supprimerCompteSansAvatar.1.0.branch4.from=contribution.majResume
+supprimerCompteSansAvatar.1.0.branch4.to=synchroRating.synchroResume
+
+# v1.1
+supprimerCompteSansAvatar.1.1.branch=contribution.diffuserAvisUtilisateur,proprietes-utilisateur.diffuserFavorisUtilisateur
+supprimerCompteSansAvatar.1.1.branch2.from=contribution.diffuserAvisUtilisateur
+supprimerCompteSansAvatar.1.1.branch2.to=contribution.supprimerAvis
+supprimerCompteSansAvatar.1.1.branch3.from=contribution.supprimerAvis
+supprimerCompteSansAvatar.1.1.branch3.to=contribution.historiser,contribution.majResume
+supprimerCompteSansAvatar.1.1.branch4.from=contribution.majResume
+supprimerCompteSansAvatar.1.1.branch4.to=synchroRating.synchroResume
+supprimerCompteSansAvatar.1.1.branch5.from=proprietes-utilisateur.diffuserFavorisUtilisateur
+supprimerCompteSansAvatar.1.1.branch5.to=proprietes-utilisateur.supprimerFavori
+
+# v1.2
+supprimerCompteSansAvatar.1.2.branch=contribution.diffuserAvisUtilisateur,proprietes-utilisateur.diffuserFavorisUtilisateur
+supprimerCompteSansAvatar.1.2.branch2.from=contribution.diffuserAvisUtilisateur
+supprimerCompteSansAvatar.1.2.branch2.to=contribution.supprimerAvis
+supprimerCompteSansAvatar.1.2.branch3.from=contribution.supprimerAvis
+supprimerCompteSansAvatar.1.2.branch3.to=contribution.historiser,contribution.majResume
+supprimerCompteSansAvatar.1.2.branch4.from=contribution.majResume
+supprimerCompteSansAvatar.1.2.branch4.to=synchroRating.synchroResume
+supprimerCompteSansAvatar.1.2.branch5.from=proprietes-utilisateur.diffuserFavorisUtilisateur
+supprimerCompteSansAvatar.1.2.branch5.to=proprietes-utilisateur.supprimerFavori
+supprimerCompteSansAvatar.1.2.branch6.from=proprietes-utilisateur.supprimerFavori
+supprimerCompteSansAvatar.1.2.branch6.to=proprietes-utilisateur.historiserFavori
+
 # v1.0
 supprimerProfilAvecAvatar.1.0.branch=csm.supprimerMedia,contact.mailUtilisateur,contribution.diffuserAvisUtilisateur
 supprimerProfilAvecAvatar.1.0.branch2.from=contribution.diffuserAvisUtilisateur

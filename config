@@ -1,17 +1,17 @@
-rabbit_shape=
+rabbit_shape=box
 rabbit_style=filled, rounded
-rabbit_size=
-rabbit_color=
+rabbit_size=10
+rabbit_color=#d50000
 
 node_shape=
 node_style=
 
 edge_color=black
 
-worc_shape=
-worc_style=
-worc_color=
+worc_shape=box
+worc_style=filled
+worc_color=#F9A825
 
-event_shape=
-event_style=
-event_color=
+event_shape=box
+event_style=filled, rounded
+event_color=#1565C0

@@ -4,6 +4,7 @@
  *
  */
 
+#include <stdbool.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
@@ -15,6 +16,9 @@ t_config	config;
 int		DEBUG = 0;
 char		*query;
 int		step = 1;
+int		last_action = -1;
+char		*previous_worc;
+bool		cluster_is_open = false;
 
 char	**my_strsep(char *s, char c)
 {
@@ -22,6 +26,7 @@ char	**my_strsep(char *s, char c)
   int	i = 0;
   int	k = 0;
   int	j = 0;
+  (DEBUG == 1) ? printf("[Strsep()]_receive : s->%s\n", s) : 0;
   while (s[i])
     {
       if (s[i] == c)
@@ -32,8 +37,8 @@ char	**my_strsep(char *s, char c)
   i = 0;
   while (i != k + 2)
     {
-      dest[i] = malloc(sizeof(char) * strlen(s));
-      memset(dest[i], 0, strlen(s));
+      dest[i] = malloc(sizeof(char) * (strlen(s) + 10));
+      memset(dest[i], 0, strlen(s) + 10);
       i++;
     }
   i = k = 0;
@@ -45,10 +50,13 @@ char	**my_strsep(char *s, char c)
 	  j++;
 	  k = 0;
 	}
+      if (s[i] == '\0')
+	break;
       dest[j][k] = s[i];
       i++;
       k++;
     }
+  (DEBUG == 1) ? printf("[Strsep()]_return : %s / %s\n", dest[0], ((dest[1] != NULL) ? dest[1] : "nullVolontaire")) : 0;
   return (dest);
 }
 
@@ -58,8 +66,8 @@ char	*getChild(char *key)
   int	k = 0;
   char *dest;
 
-  dest = malloc(sizeof(char) * strlen(key));
-  memset(dest, 0, strlen(key));
+  dest = malloc(sizeof(char) * (strlen(key) * 2));
+  memset(dest, 0, strlen(key) * 2);
   while (key[i] != '\0' && key[i] != '.')
     i++;
   (key[i] == '.') ? i++ : 0;
@@ -69,6 +77,7 @@ char	*getChild(char *key)
       k++;
       i++;
     }
+  (DEBUG == 1) ? printf("[getChild()]_return : %s\n", dest) : 0;
   dest[i] = '\0';
   return (dest);
 }
@@ -93,6 +102,9 @@ int     is_present(char *s1, char *s2)
 {
   int   i = 0;
   int   j = 0;
+
+  if (s1 == NULL || s2 == NULL || s1[0] == '\0' || s2[0] == '\0')
+    return (84);
   while (s1[i])
     {
       while (s1[i] == s2[j])
@@ -114,8 +126,8 @@ char    *return_key(char *s)
   int   k = 0;
   char  *dest;
 
-  dest = malloc(sizeof(char) * strlen(s));
-  memset(dest, 0, strlen(s));
+  dest = malloc(sizeof(char) * (strlen(s) * 2));
+  memset(dest, 0, strlen(s) * 2);
   while (s[i] != '\0' && s[i] != '=')
     i++;
   i++;
@@ -125,6 +137,7 @@ char    *return_key(char *s)
       k++;
       i++;
     }
+  (DEBUG == 1) ? printf("[Return_Key()]_return : %s\n", dest) : 0;
   return (dest);
 }
 
@@ -139,7 +152,7 @@ void	get_configcontain(char **contains)
     {
       if (s[0] != '\0')
 	{
-	  strcat(contains[i], s);
+	  sprintf(contains[i], "%s%s" , contains[i], s);
 	  i++;
 	}
       free(s);
@@ -173,7 +186,8 @@ void	get_configkey(char *prefix, char *key)
     {
       if (is_present(config_contain[i], prefix) == 0)
 	{
-	  strcat(key, return_key(config_contain[i]));
+	  //	  memset(key, 0, strlen(config_contain[i]));
+	  sprintf(key, "%s%s" , key, return_key(config_contain[i]));
 	  return;
 	}
       i++;
@@ -234,9 +248,9 @@ t_config	get_config(t_config *config)
   get_configkey("worc_shape", &*config->worc_shape);
   get_configkey("worc_style", &*config->worc_style);
   get_configkey("worc_color", &*config->worc_color);
-  get_configkey("worc_shape", &*config->worc_shape);
-  get_configkey("worc_style", &*config->worc_style);
-  get_configkey("worc_color", &*config->worc_color);
+  get_configkey("event_shape", &*config->event_shape);
+  get_configkey("event_style", &*config->event_style);
+  get_configkey("event_color", &*config->event_color);
   set_default_key(&*config);
   get_configkey(NULL, NULL); // Instructio for free
   (DEBUG == 1) ? print_config(config) : 0;
@@ -257,6 +271,8 @@ void	initialize_config(t_config *config)
   config->event_shape = malloc(sizeof(char) * 20);
   config->event_style = malloc(sizeof(char) * 20);
   config->event_color = malloc(sizeof(char) * 20);
+  previous_worc = malloc(sizeof(char) * 100);
+  memset(previous_worc, 0, 100);
 }
 
 void	print_dot_header()
@@ -268,7 +284,7 @@ void	print_dot_header()
   printf("\tconcentrate = true;\n\n");
   printf("\tnode [shape=\"%s\", style=\"%s\", penwidth = 2];\n", config.node_shape, config.node_style);
   printf("\tedge [color=\"%s\"];\n\n", config.edge_color);
-  printf("\tRabbitMQ [shape=\"%s\" width=\"%s\" style=\"%s\" color=\"%s\"];\n\n", config.rabbit_shape, config.rabbit_size, config.rabbit_style, config.rabbit_color);
+  printf("subgraph cluster_0 {\n\tRabbitMQ [label=\"%s --- RabbitMQ\" shape=\"%s\" width=\"%s\" style=\"%s\" color=\"%s\"];\n}\n", query, config.rabbit_shape, config.rabbit_size, config.rabbit_style, config.rabbit_color);
   printf("### EndHeader ###\n\n");
   
 }
@@ -306,7 +322,7 @@ void	logger(char *log_name, char *log_contain)
   printf("#### End%s ####", log_name);
 }
 
-int	branch_type_one(char **result, int n)
+int	branch_type_one(char **result, int n) // global
 {
   int	ret = 0;
   int	i = 0;
@@ -315,10 +331,14 @@ int	branch_type_one(char **result, int n)
   if (result[1] != NULL && result[1] != '\0' && result[1][0] != '\0') // When we have parallele event
     ret = 1;
   (n == 1) ? cal++ : 0;
+  printf("subgraph cluster_%d {\n", step);
+  cluster_is_open = true;
   while (result[i][0] != '\0')
     {
-      printf("\tRabbitMQ -> \"EVENT-%s\" [label=\"%d\" shape=\"%s\" style=\"%s\" color=\"%s\"];\n", getChild(result[i]), step, config.event_shape, config.event_style, config.event_color);
-      printf("\t\"EVENT-%s\" -> \"WORC-%s%d\" [shape=\"%s\" style=\"%s\" color=\"%s\"];\n", getChild(result[i]), getParent(result[i]), cal, config.worc_shape, config.worc_style, config.worc_color);
+      printf("\t\"EVENT-%s\" [shape=\"%s\" style=\"%s\" color=\"%s\"];\n", getChild(result[i]), config.event_shape, config.event_style, config.event_color);
+      printf("\tRabbitMQ -> \"EVENT-%s\" [label=\"%d\"];\n", getChild(result[i]), step);
+      printf("\t\"WORC-%s%d\" [shaper=\"%s\" style=\"%s\" color=\"%s\"];\n", getParent(result[i]), cal, config.worc_shape, config.worc_style, config.worc_color);
+      printf("\t\"EVENT-%s\" -> \"WORC-%s%d\"\n", getChild(result[i]), getParent(result[i]), cal);
       (n == 1) ? cal++ : 0;
       i++;
     }
@@ -326,7 +346,7 @@ int	branch_type_one(char **result, int n)
   return (ret);
 }  
 
-int	branch_type_three(char **result)
+int	branch_type_three(char **result) // .to
 {
   int	ret = 0;
   int	i = 0;
@@ -341,9 +361,25 @@ int	branch_type_three(char **result)
 	strcat(full_back, "\\n");
       i++;
     }
-  printf("\t\"WORC-%s%d\" -> RabbitMQ [label=\"%s\\n%d\", style=dotted];\n", getParent(result[0]), step - 1, full_back, step);
+  if (previous_worc[0] != '\0')
+    {
+      // TODO, HANDLE when multiple Event Back to Rabbit
+      printf("\t\"%s\" -> RabbitMQ [label=\"%s\\n%d\", style=dotted];\n", previous_worc, getChild(result[0]), step);
+      printf("\t\"WORC-%s%d\" [shape=\"%s\" style=\"%s\" color=\"%s\"];\n", getParent(result[0]), step - 1, config.worc_shape, config.worc_style, config.worc_color);
+      printf("\t\"EVENT-%s\" [shape=\"%s\" style=\"%s\" color=\"%s\"];\n", getChild(result[0]), config.event_shape, config.event_style, config.event_color);
+      printf("\tRabbitMQ -> \"EVENT-%s\" [label=\"%d\"];\n", getChild(result[0]), step);
+      printf("\t\"EVENT-%s\" -> \"WORC-%s%d\"\n", getChild(result[0]), getParent(result[0]), step - 1);
+    }
+  else {
+    printf("\t\"WORC-%s%d\" [shape=\"%s\" style=\"%s\" color=\"%s\"];\n", getParent(result[0]), step - 1, config.worc_shape, config.worc_style, config.worc_color);
+    // printf("\tRabbitMQ -> \"WORC-%s%d\" [label=%d];\n", getParent(result[0]), step - 1, step);
+    printf("\t\"WORC-%s%d\" -> RabbitMQ [label=\"%s\\n%d\", style=dotted];\n", getParent(result[0]), step - 1, full_back, step);
+  }
+  printf("}\n");
+  cluster_is_open = false;
   free(full_back);
   step++;
+  (previous_worc[0] != '\0') ? step++ : 0;
   if (i > 1)
     {
       ret = 1;
@@ -352,11 +388,22 @@ int	branch_type_three(char **result)
   return (ret);
 }
 
-void	branch_type_two(char *s)
+void	branch_type_two(char *s) // .from
 {
-  printf("\tRabbitMQ -> \"EVENT-%s\" [label=\"%d\" shape=\"%s\" style=\"%s\" color=\"%s\"];\n", getChild(s), step, config.event_shape, config.event_style, config.event_color);
-  printf("\t\"EVENT-%s\" -> \"WORC-%s%d\" [shape=\"%s\" style=\"%s\" color=\"%s\"];\n", getChild(s), getParent(s), step, config.worc_shape, config.worc_style, config.worc_color);
-  step++;
+  if (cluster_is_open = false)
+    {
+      printf("subgraph cluster_%d {\n", step);
+      cluster_is_open = true;
+    }
+  if (last_action != 0)
+    {
+      printf("subgraph cluster_%d {\n", step);
+      printf("\t\"EVENT-%s\" [shape=\"%s\" style=\"%s\" color=\"%s\"];\n", getChild(s), config.event_shape, config.event_style, config.event_color);
+      printf("\tRabbitMQ -> \"EVENT-%s\" [label=\"%d\"];\n", getChild(s), step);
+      printf("\t\"WORC-%s%d\" [shaper=\"%s\" style=\"%s\" color=\"%s\"];\n", getParent(s), step, config.worc_shape, config.worc_style, config.worc_color);
+      printf("\t\"EVENT-%s\" -> \"WORC-%s%d\"\n", getChild(s), getParent(s), step);
+      step++;
+    }
 }
 
 void	analyze(char *s)
@@ -364,22 +411,38 @@ void	analyze(char *s)
   static	int skipper = 0;
   if (skipper != 0)
     {
+      if (last_action == 2)
+	{
+	  sprintf(previous_worc, "WORC-%s%d", getParent(return_key(s)), step + 1);
+	}
+      else
+	memset(previous_worc, 0, 100);
       skipper--;
       return;
     }
   if (is_present(s, query) == 0)
     {
+      (DEBUG == 1) ? printf("------------> {%s} <--------------\n", s) : 0;
       if (is_present(s, "branch=") == 0)
 	{
+	  (DEBUG == 1) ? printf("[Global] {\n") : 0;
 	  skipper = branch_type_one(my_strsep(return_key(s), ','), 0);
+	  (DEBUG == 1) ? printf("}\n") : 0;
+	  last_action = 0;
 	}
       else if ((is_present(s, ".from=") == 0))
 	{
+	  (DEBUG == 1) ? printf("[From] {\n") : 0;
 	  branch_type_two(return_key(s));
+	  (DEBUG == 1) ? printf("}\n") : 0;
+	  last_action = 1;
 	}
       else if (is_present(s, ".to=") == 0)
 	{
+	  (DEBUG == 1) ? printf("[To] {\n") : 0;
 	  skipper = branch_type_three(my_strsep(return_key(s), ','));
+	  (DEBUG == 1) ? printf("}\n") : 0;
+	  last_action = 2;
 	}
     }
   else
@@ -402,6 +465,8 @@ void	transcompile(int fd)
 	analyze(s);
       free(s);
     }
+  if (cluster_is_open == true)
+    printf("}\n");
 }
 
 char	*ask_for_query()
