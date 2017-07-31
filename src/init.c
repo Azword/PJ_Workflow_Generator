@@ -14,8 +14,6 @@ void	print_dot_header()
   printf("# Transcompile from Worc's file to Dot, by Az' generator #\n\n");
   printf("##### Header #####\n\n");
   printf("digraph G {\n");
-  printf("\tsplines = ortho;\n");
-  printf("\tconcentrate = true;\n\n");
   printf("\tnode [shape=\"%s\", style=\"%s\", penwidth = 2];\n", config.node_shape, config.node_style);
   printf("\tedge [color=\"%s\"];\n\n", config.edge_color);
   printf("subgraph cluster_0 {\n\tRabbitMQ [label=\"%s --- RabbitMQ\" shape=\"%s\" width=\"%s\" style=\"%s\" color=\"%s\"];\n}\n", query, config.rabbit_shape, config.rabbit_size, config.rabbit_style, config.rabbit_color);

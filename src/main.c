@@ -99,7 +99,7 @@ void	branch_type_two(char *s) // .from
       printf("subgraph cluster_%d {\n", step);
       printf("\t\"EVENT-%s\" [shape=\"%s\" style=\"%s\" color=\"%s\"];\n", getChild(s), config.event_shape, config.event_style, config.event_color);
       printf("\tRabbitMQ -> \"EVENT-%s\" [label=\"%d\"];\n", getChild(s), step);
-      printf("\t\"WORC-%s%d\" [shaper=\"%s\" style=\"%s\" color=\"%s\"];\n", getParent(s), step, config.worc_shape, config.worc_style, config.worc_color);
+      printf("\t\"WORC-%s%d\" [shape=\"%s\" style=\"%s\" color=\"%s\"];\n", getParent(s), step, config.worc_shape, config.worc_style, config.worc_color);
       printf("\t\"EVENT-%s\" -> \"WORC-%s%d\"\n", getChild(s), getParent(s), step);
       step++;
     }
@@ -142,6 +142,10 @@ void	analyze(char *s)
 	  skipper = branch_type_three(my_strsep(return_key(s), ','));
 	  (DEBUG == 1) ? printf("}\n") : 0;
 	  last_action = 2;
+	  if (last_action = 2)
+	    {
+	      
+	    }
 	}
     }
   else
@@ -158,6 +162,7 @@ void	transcompile(int fd)
     {
       printf("#### DEBUG ####\n The query : %s\n#### #####\n", query);
     }
+  printf("subgraph cluster_init {\n\nrank = same;\n");
   while ((s = get_next_line(fd)))
     {
       if (s[0] != '#') // We skip all comments
@@ -165,7 +170,7 @@ void	transcompile(int fd)
       free(s);
     }
   if (cluster_is_open == true)
-    printf("}\n");
+    printf("\t}\n}\n");
 }
 
 int	main(int ac, char **av)
