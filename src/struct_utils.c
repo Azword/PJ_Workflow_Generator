@@ -11,6 +11,7 @@ void	print_config(t_config *config)
 {
   printf("############## DEBUG ##############\n");
   printf("            Config File            \n");
+  printf("regex        : %s\n", config->regex);
   printf("rabbit_shape : %s\n", config->rabbit_shape);
   printf("rabbit_style : %s\n", config->rabbit_style);
   printf("rabbit_size  : %s\n", config->rabbit_size);
@@ -29,6 +30,7 @@ void	print_config(t_config *config)
 
 void	set_default_key(t_config *config)
 {
+  (config->regex[0] == '\0') ? config->regex = "\0" : 0;
   (config->rabbit_shape[0] == '\0') ? config->rabbit_shape = "box" : 0;
   (config->rabbit_style[0] == '\0') ? config->rabbit_style = "rounded" : 0;
   (config->rabbit_size[0] == '\0') ? config->rabbit_size = "10" : 0;
@@ -51,6 +53,7 @@ t_config	get_config(t_config *config)
 
   if ((fd = open("./config", O_RDONLY)) == -1)
     exit (84);
+  get_configkey("pattern_regex_star", &*config->regex);
   get_configkey("rabbit_shape", &*config->rabbit_shape);
   get_configkey("rabbit_style", &*config->rabbit_style);
   get_configkey("rabbit_size", &*config->rabbit_size);
@@ -71,6 +74,7 @@ t_config	get_config(t_config *config)
 
 void	initialize_config(t_config *config)
 {
+  config->regex = malloc(sizeof(char) * 30);
   config->rabbit_shape = malloc(sizeof(char) * 30);
   config->rabbit_style = malloc(sizeof(char) * 30);
   config->rabbit_size = malloc(sizeof(char) * 30);
@@ -85,6 +89,7 @@ void	initialize_config(t_config *config)
   config->event_style = malloc(sizeof(char) * 30);
   config->event_color = malloc(sizeof(char) * 30);
   previous_worc = malloc(sizeof(char) * 100);
+  memset(config->regex, 0, 30);
   memset(config->rabbit_shape, 0, 30);
   memset(config->rabbit_style, 0, 30);
   memset(config->rabbit_color, 0, 30);

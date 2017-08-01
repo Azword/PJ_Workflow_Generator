@@ -29,7 +29,7 @@ void	get_configkey(char *prefix, char *key)
   static char **config_contain;
   int	i = 0;
   if (prefix == NULL && key == NULL)
-    while (i != 14)
+    while (i != 15)
       {
 	free(config_contain[i]);
 	i++;
@@ -37,8 +37,8 @@ void	get_configkey(char *prefix, char *key)
 
   if (config_contain == NULL)
     {
-      config_contain = malloc(sizeof(char *) * 14);
-      while (i != 14)
+      config_contain = malloc(sizeof(char *) * 15);
+      while (i != 15)
 	{
 	  config_contain[i] = malloc(sizeof(char) * 100);
 	  memset(config_contain[i], 0, 100);

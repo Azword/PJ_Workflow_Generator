@@ -21,6 +21,16 @@ int		last_action = -1;
 char		*previous_worc;
 bool		cluster_is_open = false;
 
+int	is_from_regex(char *s)
+{
+  int	i = 0;
+  while (s[i] == config.regex[i])
+    i++;
+  if (config.regex[i] == '*')
+    return (0);
+  return (84);
+}
+
 int	branch_type_one(char **result, int n) // global
 {
   int	ret = 0;

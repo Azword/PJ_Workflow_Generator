@@ -1,3 +1,5 @@
+pattern_regex_star=diffuser*
+
 rabbit_shape=box
 rabbit_style=filled, rounded
 rabbit_size=10
