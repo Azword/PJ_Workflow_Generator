@@ -26,7 +26,7 @@ int	branch_type_one(char **result, int n) // global
   int	ret = 0;
   int	i = 0;
   int	cal = step;
-
+  
   if (result[1] != NULL && result[1] != '\0' && result[1][0] != '\0') // When we have parallele event
     ret = 1;
   (n == 1) ? cal++ : 0;
@@ -89,14 +89,13 @@ int	branch_type_three(char **result) // .to
 
 void	branch_type_two(char *s) // .from
 {
-  if (cluster_is_open = false)
+  if (cluster_is_open == false)
     {
       printf("subgraph cluster_%d {\n", step);
       cluster_is_open = true;
     }
   if (last_action != 0)
     {
-      printf("subgraph cluster_%d {\n", step);
       printf("\t\"EVENT-%s\" [shape=\"%s\" style=\"%s\" color=\"%s\"];\n", getChild(s), config.event_shape, config.event_style, config.event_color);
       printf("\tRabbitMQ -> \"EVENT-%s\" [label=\"%d\"];\n", getChild(s), step);
       printf("\t\"WORC-%s%d\" [shape=\"%s\" style=\"%s\" color=\"%s\"];\n", getParent(s), step, config.worc_shape, config.worc_style, config.worc_color);
@@ -141,17 +140,11 @@ void	analyze(char *s)
 	  (DEBUG == 1) ? printf("[To] {\n") : 0;
 	  skipper = branch_type_three(my_strsep(return_key(s), ','));
 	  (DEBUG == 1) ? printf("}\n") : 0;
-	  last_action = 2;
-	  if (last_action = 2)
-	    {
-	      
-	    }
+	  last_action = 2;	
 	}
     }
   else
-    {
-      return;
-    }
+    return;
 }
 
 void	transcompile(int fd)
@@ -169,8 +162,7 @@ void	transcompile(int fd)
 	analyze(s);
       free(s);
     }
-  if (cluster_is_open == true)
-    printf("\t}\n}\n");
+  printf("}\n");
 }
 
 int	main(int ac, char **av)
