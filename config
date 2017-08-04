@@ -1,4 +1,4 @@
-pattern_regex_star=diffuser*
+pattern_regex_star=majSa*
 
 rabbit_shape=box
 rabbit_style=filled, rounded

@@ -70,7 +70,8 @@ int	branch_type_one(char **result, int n) // global
       i++;
     }
   i = 0;
-  previous_result = malloc(sizeof(char) * length);
+  previous_result = malloc(sizeof(char) * (length * 2));
+  memset(previous_result, 0, (length * 2));
   while (result[i][0])
     {
       strcat(previous_result, result[i]);
@@ -84,8 +85,8 @@ int	branch_type_one(char **result, int n) // global
 	cal++;
       printf("\t\"EVENT-%s\" [shape=\"%s\" style=\"%s\" color=\"%s\"];\n", getChild(result[i]), config.event_shape, config.event_style, config.event_color);
       printf("\tRabbitMQ -> \"EVENT-%s\" [label=\"%d\"];\n", getChild(result[i]), step);
-      printf("\t\"WORC-%s%d\" [shaper=\"%s\" style=\"%s\" color=\"%s\"];\n", getParent(result[i]), cal, config.worc_shape, config.worc_style, config.worc_color);
-      printf("\t\"EVENT-%s\" -> \"WORC-%s%d\"\n", getChild(result[i]), getParent(result[i]), cal);
+      printf("\t\"WORC-%s(%s)\" [shaper=\"%s\" style=\"%s\" color=\"%s\"];\n", getParent(result[i]), getChild(result[i]), config.worc_shape, config.worc_style, config.worc_color);
+      printf("\t\"EVENT-%s\" -> \"WORC-%s(%s)\"\n", getChild(result[i]), getParent(result[i]), getChild(result[i]));
       if (is_from_regex(getChild(result[i])) == 0)
 	  star = true;
       (n == 1) ? cal++ : 0;
@@ -110,47 +111,28 @@ int	branch_type_three(char **result) // .to
 	strcat(full_back, "\\n");
       i++;
     }
-  if (previous_from[0] != '\0')
+  i = 0;
+  if (previous_from != NULL && previous_from[0] != '\0')
     {
-      printf("\t\"%s\" -> RabbitMQ [label=\"%s\\n%d\", style=dotted];\n", previous_from, getChild(result[0]), step);
-      step++;
-      printf("\t\"WORC-%s%d\" [shape=\"%s\" style=\"%s\" color=\"%s\"];\n", getParent(result[0]), step, config.worc_shape, config.worc_style, config.worc_color);
-      printf("\t\"EVENT-%s\" [shape=\"%s\" style=\"%s\" color=\"%s\"];\n", getChild(result[0]), config.event_shape, config.event_style, config.event_color);
-      printf("\tRabbitMQ -> \"EVENT-%s\" [label=\"%d\"];\n", getChild(result[0]), step);
-      printf("\t\"EVENT-%s\" -> \"WORC-%s%d\"\n", getChild(result[0]), getParent(result[0]), step);
+      if (is_from_regex(getChild(result[i])) == 0)
+	printf("\t\"%s\" -> RabbitMQ [label=\"*\\n%s\\n%d\", style=dotted];\n", previous_from, full_back, step);
+      else
+	printf("\t\"%s\" -> RabbitMQ [label=\"%s\\n%d\", style=dotted];\n", previous_from, full_back, step);
+      while (result[i][0])
+	{
+	  (i == 0) ? step++ : 0;
+	  printf("\t\"WORC-%s(%s)\" [shape=\"%s\" style=\"%s\" color=\"%s\"];\n", getParent(result[i]), getChild(result[i]), config.worc_shape, config.worc_style, config.worc_color);
+	  printf("\t\"EVENT-%s\" [shape=\"%s\" style=\"%s\" color=\"%s\"];\n", getChild(result[i]), config.event_shape, config.event_style, config.event_color);
+	  printf("\tRabbitMQ -> \"EVENT-%s\" [label=\"%d\"];\n", getChild(result[i]), step);
+	  printf("\t\"EVENT-%s\" -> \"WORC-%s(%s)\"\n", getChild(result[i]), getParent(result[i]), getChild(result[i]));
+	  i++;
+	}
       step++;
     }
-  else if (previous_worc[0] != '\0')
-    {
-      // TODO, HANDLE when multiple Event Back to Rabbit
-      printf("\t\"%s\" -> RabbitMQ [label=\"%s\\n%d\", style=dotted];\n", previous_worc, getChild(result[0]), step);
-      printf("\t\"WORC-%s%d\" [shape=\"%s\" style=\"%s\" color=\"%s\"];\n", getParent(result[0]), step - 1, config.worc_shape, config.worc_style, config.worc_color);
-      printf("\t\"EVENT-%s\" [shape=\"%s\" style=\"%s\" color=\"%s\"];\n", getChild(result[0]), config.event_shape, config.event_style, config.event_color);
-      printf("\tRabbitMQ -> \"EVENT-%s\" [label=\"%d\"];\n", getChild(result[0]), step);
-      printf("\t\"EVENT-%s\" -> \"WORC-%s%d\"\n", getChild(result[0]), getParent(result[0]), step - 1);
-    }
-  else {
-    printf("\t\"WORC-%s%d\" [shape=\"%s\" style=\"%s\" color=\"%s\"];\n", getParent(result[0]), step - 1, config.worc_shape, config.worc_style, config.worc_color);
-    // printf("\tRabbitMQ -> \"WORC-%s%d\" [label=%d];\n", getParent(result[0]), step - 1, step);
-    if (star)
-      {
-	printf("\t\"WORC-%s%d\" -> RabbitMQ [label=\"*\\n%s\\n%d\", style=dotted];\n", getParent(result[0]), step - 1, full_back, step);
-	star = false;
-      }
-    else
-      printf("\t\"WORC-%s%d\" -> RabbitMQ [label=\"%s\\n%d\", style=dotted];\n", getParent(result[0]), step - 1, full_back, step);
-  }
   printf("}\n");
   cluster_is_open = false;
-  free(full_back);
-  step++;
-  (previous_worc[0] != '\0') ? step++ : 0;
-  if (i > 1)
-    {
-      ret = 1;
-      branch_type_one(result, 1);
-    }
-  return (ret);
+ free(full_back);
+ return (ret);
 }
 
 void	branch_type_two(char *s) // .from
@@ -162,20 +144,9 @@ void	branch_type_two(char *s) // .from
     }
   if (last_action != 12)
     {
-      if (is_present(previous_result, getChild(s)) == 84)
-      	{
-	  printf("\t\"EVENT-%s\" [shape=\"%s\" style=\"%s\" color=\"%s\"];\n", getChild(s), config.event_shape, config.event_style, config.event_color);
-	  printf("\tRabbitMQ -> \"EVENT-%s\" [label=\"%d\"];\n", getChild(s), step);
-	  printf("\t\"WORC-%s%d\" [shape=\"%s\" style=\"%s\" color=\"%s\"];\n", getParent(s), step, config.worc_shape, config.worc_style, config.worc_color);
-	  printf("\t\"EVENT-%s\" -> \"WORC-%s%d\"\n", getChild(s), getParent(s), step);
-	  step++;
-	}
-      else
-	{
-	  previous_from = malloc(sizeof(char) * (strlen(getParent(s) + 10)));
-	  memset(previous_from, 0, strlen(getParent(s) + 10));
-	  sprintf(previous_from, "WORC-%s%d", getParent(s), step);
-	}
+      previous_from = malloc(sizeof(char) * (strlen(getParent(s) + 10)));
+      memset(previous_from, 0, strlen(getParent(s) + 10));
+      sprintf(previous_from, "WORC-%s(%s)", getParent(s), getChild(s)); 
       if (previous_worc == NULL)
 	free(previous_worc);
     }
@@ -184,17 +155,6 @@ void	branch_type_two(char *s) // .from
 void	analyze(char *s)
 {
   static	int skipper = 0;
-  if (skipper != 0)
-    {
-      if (last_action == 2)
-	{
-	  sprintf(previous_worc, "WORC-%s%d", getParent(return_key(s)), step + 1);
-	}
-      else
-	memset(previous_worc, 0, 100);
-      skipper--;
-      return;
-    }
   if (is_present(s, query) == 0)
     {
       (DEBUG == 1) ? printf("------------> {%s} <--------------\n", s) : 0;
@@ -246,8 +206,11 @@ int	main(int ac, char **av)
 {
   int	fd;
 
-  if (ac == 2 && strcmp(av[1], "-d") == 0)
-    DEBUG = 1;
+  if (ac == 2 && av[1][0] == '-' && av[1][1] == 'd')
+    {
+      DEBUG = 1;
+    }
+
   initialize_config(&config);
   get_config(&config);
   fd = ask_for_path();
