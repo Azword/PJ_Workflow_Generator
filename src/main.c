@@ -20,14 +20,35 @@ int		step = 1;
 int		last_action = -1;
 char		*previous_worc;
 bool		cluster_is_open = false;
+bool		star = false;
+char		*previous_result;
+char		*previous_from;
+
+int	is_dual(int n)
+{
+  if (n % 2 == 0)
+    return (0);
+  else
+    return (84);
+}
 
 int	is_from_regex(char *s)
 {
   int	i = 0;
-  while (s[i] == config.regex[i])
-    i++;
-  if (config.regex[i] == '*')
-    return (0);
+  int	k = 0;
+  while (s[i])
+    {
+      while (s[i] != '\0' && config.regex[k] != '\0' && s[i] == config.regex[k])
+	{
+	  k++;
+	  i++;
+	}
+      if (config.regex[k] == '*')
+	return (0);
+      else
+	k = 0;
+      i++;
+    }
   return (84);
 }
 
@@ -36,18 +57,37 @@ int	branch_type_one(char **result, int n) // global
   int	ret = 0;
   int	i = 0;
   int	cal = step;
+  int	length = 0;
   
-  if (result[1] != NULL && result[1] != '\0' && result[1][0] != '\0') // When we have parallele event
-    ret = 1;
+  //  if (result[1] != NULL && result[1] != '\0' && result[1][0] != '\0') // When we have parallele event
+  //  ret = 1;
   (n == 1) ? cal++ : 0;
   printf("subgraph cluster_%d {\n", step);
   cluster_is_open = true;
+  while (result[i][0])
+    {
+      length += strlen(result[i]);
+      i++;
+    }
+  i = 0;
+  previous_result = malloc(sizeof(char) * length);
+  while (result[i][0])
+    {
+      strcat(previous_result, result[i]);
+      i++;
+    }
+  i = 0;
   while (result[i][0] != '\0')
     {
+      // TODO Add, a verif before print and a IF for the printf (IS_REGEX ? TRUE -> Print '*' : FALSE -> Do like others times
+      if (i != 0 && strcmp(getParent(result[i]), getParent(result[i - 1])) == 0)
+	cal++;
       printf("\t\"EVENT-%s\" [shape=\"%s\" style=\"%s\" color=\"%s\"];\n", getChild(result[i]), config.event_shape, config.event_style, config.event_color);
       printf("\tRabbitMQ -> \"EVENT-%s\" [label=\"%d\"];\n", getChild(result[i]), step);
       printf("\t\"WORC-%s%d\" [shaper=\"%s\" style=\"%s\" color=\"%s\"];\n", getParent(result[i]), cal, config.worc_shape, config.worc_style, config.worc_color);
       printf("\t\"EVENT-%s\" -> \"WORC-%s%d\"\n", getChild(result[i]), getParent(result[i]), cal);
+      if (is_from_regex(getChild(result[i])) == 0)
+	  star = true;
       (n == 1) ? cal++ : 0;
       i++;
     }
@@ -70,7 +110,17 @@ int	branch_type_three(char **result) // .to
 	strcat(full_back, "\\n");
       i++;
     }
-  if (previous_worc[0] != '\0')
+  if (previous_from[0] != '\0')
+    {
+      printf("\t\"%s\" -> RabbitMQ [label=\"%s\\n%d\", style=dotted];\n", previous_from, getChild(result[0]), step);
+      step++;
+      printf("\t\"WORC-%s%d\" [shape=\"%s\" style=\"%s\" color=\"%s\"];\n", getParent(result[0]), step, config.worc_shape, config.worc_style, config.worc_color);
+      printf("\t\"EVENT-%s\" [shape=\"%s\" style=\"%s\" color=\"%s\"];\n", getChild(result[0]), config.event_shape, config.event_style, config.event_color);
+      printf("\tRabbitMQ -> \"EVENT-%s\" [label=\"%d\"];\n", getChild(result[0]), step);
+      printf("\t\"EVENT-%s\" -> \"WORC-%s%d\"\n", getChild(result[0]), getParent(result[0]), step);
+      step++;
+    }
+  else if (previous_worc[0] != '\0')
     {
       // TODO, HANDLE when multiple Event Back to Rabbit
       printf("\t\"%s\" -> RabbitMQ [label=\"%s\\n%d\", style=dotted];\n", previous_worc, getChild(result[0]), step);
@@ -82,7 +132,13 @@ int	branch_type_three(char **result) // .to
   else {
     printf("\t\"WORC-%s%d\" [shape=\"%s\" style=\"%s\" color=\"%s\"];\n", getParent(result[0]), step - 1, config.worc_shape, config.worc_style, config.worc_color);
     // printf("\tRabbitMQ -> \"WORC-%s%d\" [label=%d];\n", getParent(result[0]), step - 1, step);
-    printf("\t\"WORC-%s%d\" -> RabbitMQ [label=\"%s\\n%d\", style=dotted];\n", getParent(result[0]), step - 1, full_back, step);
+    if (star)
+      {
+	printf("\t\"WORC-%s%d\" -> RabbitMQ [label=\"*\\n%s\\n%d\", style=dotted];\n", getParent(result[0]), step - 1, full_back, step);
+	star = false;
+      }
+    else
+      printf("\t\"WORC-%s%d\" -> RabbitMQ [label=\"%s\\n%d\", style=dotted];\n", getParent(result[0]), step - 1, full_back, step);
   }
   printf("}\n");
   cluster_is_open = false;
@@ -104,13 +160,24 @@ void	branch_type_two(char *s) // .from
       printf("subgraph cluster_%d {\n", step);
       cluster_is_open = true;
     }
-  if (last_action != 0)
+  if (last_action != 12)
     {
-      printf("\t\"EVENT-%s\" [shape=\"%s\" style=\"%s\" color=\"%s\"];\n", getChild(s), config.event_shape, config.event_style, config.event_color);
-      printf("\tRabbitMQ -> \"EVENT-%s\" [label=\"%d\"];\n", getChild(s), step);
-      printf("\t\"WORC-%s%d\" [shape=\"%s\" style=\"%s\" color=\"%s\"];\n", getParent(s), step, config.worc_shape, config.worc_style, config.worc_color);
-      printf("\t\"EVENT-%s\" -> \"WORC-%s%d\"\n", getChild(s), getParent(s), step);
-      step++;
+      if (is_present(previous_result, getChild(s)) == 84)
+      	{
+	  printf("\t\"EVENT-%s\" [shape=\"%s\" style=\"%s\" color=\"%s\"];\n", getChild(s), config.event_shape, config.event_style, config.event_color);
+	  printf("\tRabbitMQ -> \"EVENT-%s\" [label=\"%d\"];\n", getChild(s), step);
+	  printf("\t\"WORC-%s%d\" [shape=\"%s\" style=\"%s\" color=\"%s\"];\n", getParent(s), step, config.worc_shape, config.worc_style, config.worc_color);
+	  printf("\t\"EVENT-%s\" -> \"WORC-%s%d\"\n", getChild(s), getParent(s), step);
+	  step++;
+	}
+      else
+	{
+	  previous_from = malloc(sizeof(char) * (strlen(getParent(s) + 10)));
+	  memset(previous_from, 0, strlen(getParent(s) + 10));
+	  sprintf(previous_from, "WORC-%s%d", getParent(s), step);
+	}
+      if (previous_worc == NULL)
+	free(previous_worc);
     }
 }
 
@@ -185,6 +252,7 @@ int	main(int ac, char **av)
   get_config(&config);
   fd = ask_for_path();
   query = ask_for_query();
+  previous_result = malloc(sizeof(char *) * 20);
   if (fd == 84)
     return (84);
   print_dot_header();
